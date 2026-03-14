@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agilent 8900 ICP-MS — Method Development Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #080e14;
+    --bg2:       #0d1720;
+    --bg3:       #111f2e;
+    --panel:     #0f1e2d;
+    --border:    #1a3045;
+    --accent:    #00d4c8;
+    --accent2:   #0099e6;
+    --accent3:   #f0a500;
+    --accent4:   #e05a5a;
+    --text:      #d4e8f7;
+    --muted:     #5a7f99;
+    --heading:   #eaf4ff;
+    --white:     #ffffff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(8,14,20,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 0.2rem;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--accent);
+    background: rgba(0,212,200,0.07);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 8rem 6rem 4rem;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,200,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,200,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,153,230,0.12) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
+  }
+
+  .hero-glow2 {
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,212,200,0.08) 0%, transparent 70%);
+    bottom: 50px; left: 100px;
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(0,212,200,0.08);
+    border: 1px solid rgba(0,212,200,0.2);
+    padding: 0.35rem 0.9rem;
+    border-radius: 20px;
+    margin-bottom: 2rem;
+    display: inline-block;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    line-height: 1.1;
+    color: var(--heading);
+    max-width: 820px;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 580px;
+    font-weight: 300;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-meta {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 2rem;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .hero-stat {
+    text-align: left;
+  }
+
+  .hero-stat-val {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--accent);
+    display: block;
+  }
+
+  .hero-stat-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--muted);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    animation: fadeUp 1s 0.6s ease both;
+  }
+
+  .scroll-hint::after {
+    content: '';
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(var(--accent), transparent);
+    animation: scrollLine 1.5s ease infinite;
+  }
+
+  @keyframes scrollLine {
+    0% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+    100% { opacity: 0; transform: scaleY(0.2); transform-origin: top; }
+  }
+
+  /* ── MAIN LAYOUT ── */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+  }
+
+  /* ── SECTION ── */
+  section {
+    padding-top: 5rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    background: rgba(0,212,200,0.08);
+    border: 1px solid rgba(0,212,200,0.15);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    color: var(--heading);
+    line-height: 1.2;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .card:hover {
+    border-color: rgba(0,212,200,0.3);
+    transform: translateX(4px);
+  }
+
+  .card:hover::before { opacity: 1; }
+
+  .card h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--heading);
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .card h3 .icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .card p, .card li {
+    font-size: 0.92rem;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .card ul, .card ol {
+    padding-left: 1.25rem;
+    margin-top: 0.5rem;
+  }
+
+  .card li { margin-bottom: 0.3rem; }
+
+  /* ── GRID LAYOUTS ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+
+  /* ── ACCENT CARDS ── */
+  .card-accent {
+    background: linear-gradient(135deg, rgba(0,212,200,0.06) 0%, rgba(0,153,230,0.04) 100%);
+    border-color: rgba(0,212,200,0.2);
+  }
+
+  .card-warning {
+    background: linear-gradient(135deg, rgba(240,165,0,0.06) 0%, rgba(240,165,0,0.02) 100%);
+    border-color: rgba(240,165,0,0.25);
+  }
+
+  .card-warning::before { background: var(--accent3); }
+
+  .card-danger {
+    background: linear-gradient(135deg, rgba(224,90,90,0.06) 0%, rgba(224,90,90,0.02) 100%);
+    border-color: rgba(224,90,90,0.25);
+  }
+
+  .card-danger::before { background: var(--accent4); }
+
+  /* ── TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    margin: 1.5rem 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+
+  thead {
+    background: var(--bg3);
+  }
+
+  th {
+    padding: 0.85rem 1.1rem;
+    text-align: left;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid rgba(26,48,69,0.6);
+    vertical-align: top;
+    color: var(--text);
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(0,212,200,0.03); }
+
+  /* ── CODE / MONO BLOCKS ── */
+  .mono-block {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 1.1rem 1.4rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--accent);
+    margin: 1rem 0;
+    line-height: 1.7;
+    overflow-x: auto;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: rgba(0,212,200,0.05);
+    border: 1px solid rgba(0,212,200,0.2);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .callout-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 0.1rem; }
+
+  .callout p { font-size: 0.92rem; color: var(--text); }
+
+  .callout-warn {
+    background: rgba(240,165,0,0.05);
+    border-color: rgba(240,165,0,0.2);
+  }
+
+  /* ── STEP FLOW ── */
+  .steps { display: flex; flex-direction: column; gap: 0; margin: 1.5rem 0; }
+
+  .step {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 1.25rem;
+    position: relative;
+  }
+
+  .step:not(:last-child) .step-num::after {
+    content: '';
+    position: absolute;
+    left: 27px;
+    top: 56px;
+    width: 2px;
+    height: calc(100% - 16px);
+    background: linear-gradient(var(--border), transparent);
+  }
+
+  .step-num {
+    width: 56px;
+    height: 56px;
+    background: var(--bg3);
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--accent);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .step:hover .step-num {
+    background: rgba(0,212,200,0.1);
+    border-color: var(--accent);
+  }
+
+  .step-body { padding: 0.7rem 0 2rem; }
+
+  .step-body h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--heading);
+    margin-bottom: 0.4rem;
+  }
+
+  .step-body p, .step-body li {
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+
+  .step-body ul { padding-left: 1.2rem; margin-top: 0.4rem; }
+  .step-body li { margin-bottom: 0.25rem; }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .badge-teal { background: rgba(0,212,200,0.12); color: var(--accent); border: 1px solid rgba(0,212,200,0.2); }
+  .badge-blue { background: rgba(0,153,230,0.12); color: #4db8ff; border: 1px solid rgba(0,153,230,0.2); }
+  .badge-amber { background: rgba(240,165,0,0.12); color: #f0c040; border: 1px solid rgba(240,165,0,0.2); }
+  .badge-red { background: rgba(224,90,90,0.12); color: #e08080; border: 1px solid rgba(224,90,90,0.2); }
+  .badge-green { background: rgba(40,200,120,0.12); color: #40d090; border: 1px solid rgba(40,200,120,0.2); }
+
+  /* ── PROSE ── */
+  .prose p { margin-bottom: 1rem; font-size: 0.95rem; }
+  .prose strong { color: var(--heading); font-weight: 600; }
+  .prose em { color: var(--accent); font-style: normal; font-weight: 500; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 3rem 0;
+  }
+
+  /* ── PILL TAG ── */
+  .pill-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight-box {
+    background: linear-gradient(135deg, var(--bg3) 0%, var(--bg2) 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    color: var(--heading);
+    margin-bottom: 1rem;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .param-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .param-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    width: 180px;
+    flex-shrink: 0;
+  }
+
+  .param-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--bg);
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .param-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+  }
+
+  .param-val {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    width: 90px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+
+  footer span { color: var(--accent); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .hero { padding: 6rem 1.5rem 3rem; }
+    main { padding: 0 1.25rem 4rem; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    footer { padding: 2rem 1.5rem; flex-direction: column; gap: 0.75rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-brand">⬡ Agilent 8900 ICP-QQQ</div>
+  <ul class="nav-links">
+    <li><a href="#intro">Overview</a></li>
+    <li><a href="#why">Why Develop</a></li>
+    <li><a href="#workflow">Workflow</a></li>
+    <li><a href="#masses">Mass Selection</a></li>
+    <li><a href="#cellgas">Cell Gas</a></li>
+    <li><a href="#plasma">Plasma Tune</a></li>
+    <li><a href="#calibration">Calibration</a></li>
+    <li><a href="#istd">ISTD</a></li>
+    <li><a href="#sampleprep">Sample Prep</a></li>
+    <li><a href="#validation">Validation</a></li>
+    <li><a href="#troubleshoot">Troubleshoot</a></li>
+    <li><a href="#pharma">Pharma Guide</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="hero-tag">Comprehensive Technical Guide · ICP-MS</div>
+
+  <h1>Method Development<br>for the <em>Agilent 8900</em><br>ICP Triple Quadrupole</h1>
+
+  <p class="hero-sub">
+    A complete, practical guide — from first principles to validated pharmaceutical methods.
+    Written for analysts who operate the instrument and want to understand the science behind it.
+  </p>
+
+  <div class="hero-meta">
+    <div class="hero-stat">
+      <span class="hero-stat-val">10</span>
+      <span class="hero-stat-label">Core Chapters</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-val">8900</span>
+      <span class="hero-stat-label">ICP-QQQ Model</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-val">ICH Q3D</span>
+      <span class="hero-stat-label">Pharma Standard</span>
+    </div>
+  </div>
+
+  <div class="scroll-hint">Scroll to begin</div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- SECTION 1: WHAT IS THE 8900 -->
+  <!-- ══════════════════════════════════ -->
+  <section id="intro" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2>Understanding the Agilent 8900 ICP-QQQ</h2>
+    </div>
+
+    <div class="prose">
+      <p>
+        The Agilent 8900 is not just another ICP-MS. It is a <strong>Triple Quadrupole ICP-MS (ICP-QQQ)</strong> — a fundamentally different instrument architecture that gives it interference-removal capabilities far beyond a conventional single-quadrupole instrument like the 7800 or 7900.
+      </p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card card-accent">
+        <h3><span class="icon">🔷</span> Standard ICP-MS (7800/7900)</h3>
+        <p>One quadrupole mass filter (Q). Separates ions by mass-to-charge ratio. Collision/reaction cell helps reduce some polyatomic interferences. Cannot prevent off-mass ions from entering the cell.</p>
+      </div>
+      <div class="card card-accent" style="border-color:rgba(0,153,230,0.3); background: linear-gradient(135deg, rgba(0,153,230,0.06) 0%, rgba(0,153,230,0.02) 100%);">
+        <h3><span class="icon">🔷🔷</span> ICP-QQQ — 8900</h3>
+        <p>Two quadrupole mass filters (Q1 and Q2) with a collision/reaction cell between them. Q1 controls exactly which ions enter the cell — this is the game-changer that enables <strong>MS/MS mode</strong>.</p>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <h3>How the Ion Path Works in the 8900</h3>
+      <div class="mono-block">
+Plasma → Sampler Cone → Skimmer Cone → Q1 (mass filter) → Collision/Reaction Cell → Q2 (mass filter) → Detector
+
+Single Quad Mode:  Q1 acts as ion guide only (all masses pass) → Cell → Q2 filters target mass
+MS/MS Mode:        Q1 filters ONLY the precursor mass → Cell → Q2 filters product mass
+      </div>
+      <p style="font-size:0.9rem; color:var(--muted); margin-top:0.75rem;">In MS/MS mode, any interfering ion at a different mass is <strong style="color:var(--accent4)">rejected by Q1 before it even enters the cell</strong>. This is why the 8900 can remove interferences that confound all other ICP-MS instruments.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3><span class="icon">⚡</span> Key Strength 1</h3>
+        <p>MS/MS mode eliminates complex polyatomic interferences that previously required lengthy chemical separation procedures.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🎯</span> Key Strength 2</h3>
+        <p>Mass-shift reactions allow elements to be measured at completely interference-free product masses (e.g., S measured as SO⁺).</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🧫</span> Key Strength 3</h3>
+        <p>Handles complex matrices — pharmaceutical digests, biological fluids, food samples — with minimal sample preparation.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- SECTION 2: WHY METHOD DEVELOPMENT -->
+  <!-- ══════════════════════════════════ -->
+  <section id="why" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2>Why Do We Need Method Development?</h2>
+    </div>
+
+    <div class="prose">
+      <p>
+        Every sample type presents unique analytical challenges. A generic preset method may work adequately for clean, simple samples — but for regulatory work, complex matrices, or challenging elements, a purpose-developed method is essential.
+      </p>
+    </div>
+
+    <div class="callout">
+      <span class="callout-icon">💡</span>
+      <p><strong>Plain language definition:</strong> Method development is the systematic process of designing, optimizing, and proving that your measurement procedure will consistently give you accurate, reliable results for a specific combination of elements, sample type, and concentration range.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card card-warning">
+        <h3><span class="icon">⚠️</span> Without Method Development</h3>
+        <ul>
+          <li>Undetected interferences → false results</li>
+          <li>Calibration range doesn't match sample levels</li>
+          <li>Wrong cell gas mode for your elements</li>
+          <li>Internal standards that don't correct for your matrix</li>
+          <li>Incomplete sample digestion → low recoveries</li>
+          <li>Results that cannot be defended in audit or court</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:rgba(40,200,120,0.25); background:linear-gradient(135deg,rgba(40,200,120,0.05),transparent);">
+        <h3><span class="icon">✅</span> With Proper Method Development</h3>
+        <ul>
+          <li>Known and controlled interferences</li>
+          <li>Calibration matched to expected concentration range</li>
+          <li>Optimal cell gas and MS/MS conditions per element</li>
+          <li>Validated accuracy, precision, and detection limits</li>
+          <li>Full audit trail and regulatory defensibility</li>
+          <li>Confident, reliable results every run</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>What Happens</th>
+            <th>Who Does It</th>
+            <th>Frequency</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-blue">Method Development</span></td>
+            <td>Design the measurement procedure from scratch</td>
+            <td>Senior analyst / method development scientist</td>
+            <td>Once (or when new sample type introduced)</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-amber">Method Validation</span></td>
+            <td>Formally prove the method works per regulatory requirements</td>
+            <td>Analyst with QA oversight</td>
+            <td>Once after development</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-teal">Routine Calibration</span></td>
+            <td>Run calibration standards, check R², verify instrument performance</td>
+            <td>Routine operator</td>
+            <td>Every analytical run</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-green">System Suitability</span></td>
+            <td>Confirm the method is in-control for that day's batch</td>
+            <td>Routine operator</td>
+            <td>Every analytical run</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- SECTION 3: WORKFLOW OVERVIEW -->
+  <!-- ══════════════════════════════════ -->
+  <section id="workflow" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2>The Method Development Workflow</h2>
+    </div>
+
+    <div class="prose">
+      <p>Method development follows a logical, sequential process. Each step builds on the previous one. Rushing or skipping steps early invariably causes problems during validation.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <h4>Define the Analytical Goal</h4>
+          <p>Before touching the instrument, answer: What elements? What matrix? What regulatory limits? What concentration range? What detection limits are required?</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <h4>Literature & Preset Method Review</h4>
+          <p>Search Agilent's Applications Handbook, peer-reviewed journals (JAAS), and pharmacopoeias for existing methods. Never start from scratch if a published method exists — adapt and optimize.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <h4>Select Masses and Isotopes</h4>
+          <p>For each target element, choose the best isotope(s). Consider natural abundance, known interferences, and whether MS/MS mass-shift is required.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-body">
+          <h4>Choose Cell Gas Mode</h4>
+          <p>Decide: No gas, He collision mode, or MS/MS with reaction gas (H₂, O₂, NH₃)? This depends on the severity of interferences in your specific matrix.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <div class="step-body">
+          <h4>Optimize Plasma & Lens Conditions</h4>
+          <p>Tune RF power, sampling depth, nebulizer flow, and extraction lens voltages for your application. Use autotune as a starting point, then fine-tune manually for critical applications.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">06</div>
+        <div class="step-body">
+          <h4>Select Internal Standards (ISTD)</h4>
+          <p>Choose elements that match the mass range of your analytes, are not present in your samples, and correct for matrix-induced signal drift.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">07</div>
+        <div class="step-body">
+          <h4>Design Calibration Curve</h4>
+          <p>Define concentration range, number of points, calibration blank, and matrix-matching strategy. The range must bracket expected sample concentrations.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">08</div>
+        <div class="step-body">
+          <h4>Develop Sample Preparation</h4>
+          <p>Design the digestion or extraction procedure. Optimize acid type, volumes, digestion temperature and time. Verify complete digestion using a certified reference material (CRM).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">09</div>
+        <div class="step-body">
+          <h4>Test & Optimize on Real Samples</h4>
+          <p>Run spiked samples and CRMs through the full method. Check accuracy (recovery 85–115%), precision (%RSD ≤ 10%), and detection limits. Refine until targets are consistently met.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">10</div>
+        <div class="step-body">
+          <h4>Document and Validate</h4>
+          <p>Write up the complete procedure as a formal method SOP. Conduct formal validation per ICH Q2(R1) or applicable guideline. Submit for QA approval.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- SECTION 4: MASS SELECTION -->
+  <!-- ══════════════════════════════════ -->
+  <section id="masses" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2>Mass & Isotope Selection</h2>
+    </div>
+
+    <div class="prose">
+      <p>Choosing the right isotope for each element is one of the most critical decisions in method development. The wrong choice leads to systematic errors that no amount of optimization will fix.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3><span class="icon">⚖️</span> Selection Criteria</h3>
+        <ul>
+          <li><strong>Natural abundance</strong> — choose the most abundant isotope for best sensitivity</li>
+          <li><strong>Spectral interferences</strong> — avoid masses with known polyatomic or isobaric overlaps for your matrix</li>
+          <li><strong>MS/MS feasibility</strong> — can the interference be removed via MS/MS reaction?</li>
+          <li><strong>Detector linearity</strong> — avoid very high-abundance isotopes for high-concentration elements (they may saturate the detector)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🔍</span> Types of Interferences</h3>
+        <ul>
+          <li><strong>Isobaric:</strong> Two different elements with the same nominal mass (e.g., ¹¹⁴Cd and ¹¹⁴Sn)</li>
+          <li><strong>Polyatomic:</strong> Molecular ions formed in the plasma (e.g., ⁴⁰Ar³⁵Cl⁺ interfering with ⁷⁵As⁺)</li>
+          <li><strong>Doubly-charged:</strong> Ions with 2+ charge appear at half their true mass</li>
+          <li><strong>Physical:</strong> Signal suppression/enhancement from matrix salts</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Element</th>
+            <th>Recommended Mass</th>
+            <th>Key Interference</th>
+            <th>Solution on 8900</th>
+            <th>Cell Gas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>As</strong></td><td>m/z 75</td><td>⁴⁰Ar³⁵Cl⁺ (in chloride matrices)</td><td>MS/MS on-mass</td><td>H₂</td></tr>
+          <tr><td><strong>Se</strong></td><td>m/z 80 → 96</td><td>⁴⁰Ar₂⁺ at m/z 80</td><td>MS/MS mass-shift (SeO⁺)</td><td>O₂</td></tr>
+          <tr><td><strong>S</strong></td><td>m/z 32 → 48</td><td>³²O₂⁺, ¹⁶O₂⁺ at m/z 32</td><td>MS/MS mass-shift (SO⁺)</td><td>O₂</td></tr>
+          <tr><td><strong>Fe</strong></td><td>m/z 56 or 57</td><td>⁴⁰Ar¹⁶O⁺ at m/z 56</td><td>He collision or MS/MS H₂</td><td>He or H₂</td></tr>
+          <tr><td><strong>Cr</strong></td><td>m/z 52</td><td>³⁵Cl¹⁶O⁺, ³⁸Ar¹⁴N⁺</td><td>He or MS/MS H₂</td><td>He or H₂</td></tr>
+          <tr><td><strong>V</strong></td><td>m/z 51</td><td>³⁵Cl¹⁶O⁺, ³⁷Cl¹⁴N⁺</td><td>MS/MS O₂ (VO⁺ at m/z 67)</td><td>O₂</td></tr>
+          <tr><td><strong>Cd</strong></td><td>m/z 111 or 114</td><td>¹¹⁴Sn at m/z 114</td><td>Use m/z 111; He collision</td><td>He</td></tr>
+          <tr><td><strong>Pb</strong></td><td>m/z 208</td><td>Minimal (high mass)</td><td>No gas or He</td><td>None/He</td></tr>
+          <tr><td><strong>Hg</strong></td><td>m/z 202</td><td>Minimal</td><td>No gas</td><td>None</td></tr>
+          <tr><td><strong>Ni</strong></td><td>m/z 60</td><td>⁴⁴Ca¹⁶O⁺, ²⁸Si₂⁺</td><td>He collision</td><td>He</td></tr>
+          <tr><td><strong>Co</strong></td><td>m/z 59</td><td>⁴³Ca¹⁶O⁺</td><td>He or MS/MS H₂</td><td>He</td></tr>
+          <tr><td><strong>Mo</strong></td><td>m/z 98</td><td>⁹⁸Ru isobaric</td><td>He; avoid if Ru present</td><td>He</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-warn">
+      <span class="callout-icon">⚠️</span>
+      <p><strong>Matrix-specific rule:</strong> The interferences relevant to your method depend on your sample matrix. A high-chloride biological sample will have completely different interference challenges than a soil digest. Always consider your matrix when selecting masses.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- SECTION 5: CELL GAS MODE -->
+  <!-- ══════════════════════════════════ -->
+  <section id="cellgas" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2>Cell Gas Mode Selection</h2>
+    </div>
+
+    <div class="prose">
+      <p>The collision/reaction cell is the heart of interference removal in ICP-MS. On the 8900, the combination of Q1 + cell gas enables a level of selectivity not achievable on any other ICP-MS platform. Choosing the right mode for each element is a core method development decision.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3><span class="icon">🌀</span> No Gas Mode</h3>
+        <div class="pill-row">
+          <span class="badge badge-teal">High mass elements</span>
+          <span class="badge badge-green">Clean matrices</span>
+        </div>
+        <p style="margin-top:0.85rem;">For elements at high masses (above ~120 amu) where polyatomic interferences are rare. Used for Pb, Hg, Tl, U, Th. Provides maximum sensitivity.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">💨</span> He Collision Mode</h3>
+        <div class="pill-row">
+          <span class="badge badge-blue">General use</span>
+          <span class="badge badge-amber">Mid-mass elements</span>
+        </div>
+        <p style="margin-top:0.85rem;">Helium gas slows down large polyatomic ions more than small analyte ions (kinetic energy discrimination). Excellent first-choice for most mid-mass elements (Cr, Ni, Co, Cd). Simple, robust, and universally applicable.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">⚗️</span> MS/MS Reaction Gas</h3>
+        <div class="pill-row">
+          <span class="badge badge-red">Severe interferences</span>
+          <span class="badge badge-teal">8900 unique</span>
+        </div>
+        <p style="margin-top:0.85rem;">Reactive gases (H₂, O₂, NH₃) chemically transform either the analyte or the interfering ion. Combined with Q1 pre-filtering, this is the most powerful interference removal available. Required for As, Se, S, and others in complex matrices.</p>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <h3>Understanding MS/MS: On-Mass vs Mass-Shift</h3>
+      <div class="grid-2" style="margin-top:1rem;">
+        <div class="card card-accent" style="margin-bottom:0;">
+          <h3><span class="icon">🎯</span> On-Mass Measurement</h3>
+          <p>The <strong>interference</strong> reacts with the cell gas and is converted to a product ion at a different mass — leaving the analyte alone at the original mass.</p>
+          <div class="mono-block" style="margin-top:0.75rem; font-size:0.75rem;">
+Example: As in chloride matrix with H₂
+Q1 passes m/z 75 only
+→ ArCl⁺ (interferer) reacts with H₂ → eliminated
+→ ⁷⁵As⁺ (analyte) unreacted → passes to Q2
+Q2 measures at m/z 75 (on-mass)
+          </div>
+        </div>
+        <div class="card" style="background:linear-gradient(135deg,rgba(0,153,230,0.06),transparent); border-color:rgba(0,153,230,0.25); margin-bottom:0;">
+          <h3><span class="icon">➡️</span> Mass-Shift Measurement</h3>
+          <p>The <strong>analyte</strong> reacts with the cell gas and is converted to a predictable product ion at a higher mass — where no interference exists.</p>
+          <div class="mono-block" style="margin-top:0.75rem; font-size:0.75rem;">
+Example: Se with O₂ gas
+Q1 passes m/z 80 only (precursor)
+→ ⁸⁰Se⁺ + O₂ → ⁸⁰Se¹⁶O⁺ (product ion)
+→ ArAr⁺ (interferer at m/z 80) does NOT react
+Q2 measures at m/z 96 (mass-shifted, interference-free)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Cell Gas</th>
+            <th>Mechanism</th>
+            <th>Best For</th>
+            <th>Purity Required</th>
+            <th>Flow Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>He</strong></td>
+            <td>Kinetic energy discrimination</td>
+            <td>General polyatomic removal; most mid-mass elements</td>
+            <td>≥ 99.999%</td>
+            <td>Up to 12 mL/min</td>
+          </tr>
+          <tr>
+            <td><strong>H₂</strong></td>
+            <td>Charge transfer, proton transfer</td>
+            <td>As, Cr, Fe, Se (on-mass); Si</td>
+            <td>≥ 99.999%</td>
+            <td>1–5 mL/min</td>
+          </tr>
+          <tr>
+            <td><strong>O₂</strong></td>
+            <td>Oxygen atom transfer — mass shift</td>
+            <td>Se (→SeO⁺), S (→SO⁺), V (→VO⁺), Ti</td>
+            <td>≥ 99.999%</td>
+            <td>0.1–0.5 mL/min</td>
+          </tr>
+          <tr>
+            <td><strong>NH₃ / He</strong></td>
+            <td>Proton transfer, adduct formation</td>
+            <td>Complex matrices; Si, P, S in high-matrix samples</td>
+            <td>≥ 99.99%</td>
+            <td>Varies</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-warn">
+      <span class="callout-icon">⚠️</span>
+      <p><strong>Important for O₂ gas:</strong> Oxygen can form deposits in the ion optics if used at too high a flow rate or with high-carbon matrices. Always optimize the O₂ flow during method development and rinse with dilute nitric acid after O₂ mode runs.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- SECTION 6: PLASMA TUNING -->
+  <!-- ══════════════════════════════════ -->
+  <section id="plasma" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2>Plasma & Lens Condition Optimization</h2>
+    </div>
+
+    <div class="prose">
+      <p>Once you've selected masses and cell gas modes, you need to optimize the instrument's physical operating conditions. These parameters affect sensitivity, oxide formation, matrix tolerance, and signal stability. There is no single "correct" set of conditions — they depend on your application.</p>
+    </div>
+
+    <div class="card card-accent">
+      <h3><span class="icon">📊</span> Typical Conditions for Pharmaceutical Elemental Impurity Analysis</h3>
+      <div style="margin-top:1.25rem;">
+        <div class="param-row">
+          <span class="param-label">RF Power</span>
+          <div class="param-bar"><div class="param-fill" style="width:78%"></div></div>
+          <span class="param-val">1550 W</span>
+        </div>
+        <div class="param-row">
+          <span class="param-label">Carrier Gas Flow</span>
+          <div class="param-bar"><div class="param-fill" style="width:63%"></div></div>
+          <span class="param-val">1.05 L/min</span>
+        </div>
+        <div class="param-row">
+          <span class="param-label">Sampling Depth</span>
+          <div class="param-bar"><div class="param-fill" style="width:48%"></div></div>
+          <span class="param-val">8.0 mm</span>
+        </div>
+        <div class="param-row">
+          <span class="param-label">Extract 1 Voltage</span>
+          <div class="param-bar"><div class="param-fill" style="width:10%"></div></div>
+          <span class="param-val">0 V</span>
+        </div>
+        <div class="param-row">
+          <span class="param-label">Extract 2 Voltage</span>
+          <div class="param-bar"><div class="param-fill" style="width:56%"></div></div>
+          <span class="param-val">−190 V</span>
+        </div>
+        <div class="param-row">
+          <span class="param-label">Make-up Gas</span>
+          <div class="param-bar"><div class="param-fill" style="width:22%"></div></div>
+          <span class="param-val">0.10 L/min</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:1.25rem;">
+      <div class="card">
+        <h3><span class="icon">🔥</span> RF Power Effects</h3>
+        <ul>
+          <li><strong>Higher power (1500–1600 W)</strong> — hotter plasma, better ionization of difficult elements (As, Se, Hg), more robust against organic matrix; slightly higher oxide ratio</li>
+          <li><strong>Lower power (1200–1400 W)</strong> — cooler plasma, lower oxides, better for easily-ionized elements; less robust with organic load</li>
+          <li>For pharma work with digested organic matrices, <em>use higher RF power (robust plasma conditions)</em></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon">📏</span> Sampling Depth Effects</h3>
+        <ul>
+          <li><strong>Closer to plasma (smaller depth)</strong> — higher sensitivity for difficult elements; higher oxide ratio; less stable signal</li>
+          <li><strong>Further from plasma (larger depth)</strong> — lower oxides (important for rare earths); more stable; slightly lower sensitivity</li>
+          <li>Start with 8 mm and adjust based on your oxide ratio and sensitivity requirements</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card card-warning" style="margin-top:1.25rem;">
+      <h3><span class="icon">🎚️</span> The Oxide Ratio — A Critical Quality Indicator</h3>
+      <p>The oxide ratio (CeO⁺/Ce⁺, measured at m/z 156/140) tells you how much oxygen is combining with analyte ions in the plasma. It must be monitored during method development.</p>
+      <div class="table-wrap" style="margin-top:0.75rem;">
+        <table>
+          <thead><tr><th>CeO/Ce Ratio</th><th>Plasma Condition</th><th>Suitable For</th></tr></thead>
+          <tbody>
+            <tr><td>≤ 1.5%</td><td>Cool / robust</td><td>Elements susceptible to oxide interferences (Ba, La, REEs)</td></tr>
+            <tr><td>2–3%</td><td>Standard</td><td>Most general-purpose applications</td></tr>
+            <tr><td>> 3%</td><td>Hot / hard</td><td>Difficult-to-ionize elements; avoid for Ba, La, REE analysis</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- SECTION 7: CALIBRATION -->
+  <!-- ══════════════════════════════════ -->
+  <section id="calibration" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2>Calibration Strategy</h2>
+    </div>
+
+    <div class="prose">
+      <p>During routine operation, you prepare standards and check R² — but the <em>design</em> of that calibration (what concentrations to use, how many points, what acid, which blank) was determined during method development. Here's how those decisions are made.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3><span class="icon">📈</span> Designing the Calibration Range</h3>
+        <ul>
+          <li>The range must <strong>bracket your expected sample concentrations</strong> — samples should fall within the calibration range, not above or below it</li>
+          <li>For pharmaceutical elemental impurities: calibrate from ~10% to ~150% of the permitted daily exposure (PDE) concentration limit</li>
+          <li>Always include a <strong>calibration blank</strong> (0 ppb standard in matching acid)</li>
+          <li>Minimum 5 calibration points for regulatory submissions</li>
+          <li>Check linearity: R² ≥ 0.999 is the standard acceptance criterion for ICP-MS</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🧪</span> Matrix Matching — The Most Overlooked Step</h3>
+        <ul>
+          <li>Your calibration standards must be prepared in the same acid type and concentration as your digested samples</li>
+          <li>For a 2% HNO₃ sample digest: prepare all standards in 2% HNO₃</li>
+          <li>If samples contain HCl (e.g., for Hg), add the same % HCl to standards</li>
+          <li>Failure to matrix-match is one of the most common sources of systematic error in ICP-MS</li>
+          <li>For very complex matrices (blood, urine), standard addition may be required</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <h3>Calibration Point Design — A Practical Example</h3>
+      <p style="font-size:0.88rem; color:var(--muted); margin-bottom:1rem;">For ICH Q3D elemental impurities in oral drug products (oral PDE for Pb = 500 μg/day, assuming 10g sample = 50 ppb solution equivalent):</p>
+      <div class="mono-block">
+Blank:     0 ppb   (2% HNO₃ + ISTD mix)
+Point 1:   0.5 ppb  (~1% of limit)
+Point 2:   5 ppb    (~10% of limit)
+Point 3:   25 ppb   (~50% of limit)
+Point 4:   50 ppb   (~100% of limit — target level)
+Point 5:   75 ppb   (~150% of limit)
+Point 6:   100 ppb  (upper anchor)
+
+Expected R²: ≥ 0.9999 for Pb at these concentrations
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3><span class="icon">📋</span> Calibration Blank</h3>
+        <p>The calibration blank is your 0 ppb standard. It establishes your background signal. It must be prepared identically to your standards (same acid, same ISTD). Never use pure water as a calibration blank for ICP-MS.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🔄</span> Rinse Blank / Wash</h3>
+        <p>Run a rinse solution (2% HNO₃) between samples to prevent carryover. If your high-concentration standard or sample carries over into the next analysis, your results will be falsely elevated. Check by running a rinse blank after your highest standard.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">✔️</span> Calibration Verification</h3>
+        <p>After calibrating, run an independent calibration verification standard (CVS) — prepared from a different stock solution than your calibration standards. Expected recovery: 95–105%. This confirms your calibration is accurate, not just precise.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- SECTION 8: ISTD -->
+  <!-- ══════════════════════════════════ -->
+  <section id="istd" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <h2>Internal Standard Selection</h2>
+    </div>
+
+    <div class="prose">
+      <p>Internal standards (ISTDs) are the quality backbone of any ICP-MS method. They are added at the same known concentration to every solution — calibration standards, blanks, and samples alike — and correct for variations in signal that would otherwise cause errors.</p>
+    </div>
+
+    <div class="callout">
+      <span class="callout-icon">💡</span>
+      <p><strong>What do ISTDs correct for?</strong> Signal drift over time (as cones get dirty), matrix suppression or enhancement (samples with high dissolved solids suppress signal compared to clean standards), viscosity differences between samples and standards, and short-term plasma instability.</p>
+    </div>
+
+    <div class="card">
+      <h3><span class="icon">📌</span> Rules for Choosing ISTDs</h3>
+      <ul>
+        <li>Must <strong>NOT be present</strong> in your samples naturally (or present only at negligible levels)</li>
+        <li>Should have a <strong>mass close to the analytes</strong> it corrects — heavier elements corrected by heavier ISTDs</li>
+        <li>Must be <strong>chemically stable</strong> in your acid medium and not volatile</li>
+        <li>Should respond to <strong>matrix effects similarly</strong> to the analytes it corrects</li>
+        <li>Should be measured in the <strong>same cell gas mode</strong> as the analytes it corrects (when possible)</li>
+      </ul>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ISTD Element</th>
+            <th>Mass (m/z)</th>
+            <th>Analytes It Covers</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>⁶Li</strong></td>
+            <td>6</td>
+            <td>Very light elements</td>
+            <td>Rarely used for pharma; natural ⁷Li more common</td>
+          </tr>
+          <tr>
+            <td><strong>⁴⁵Sc</strong></td>
+            <td>45</td>
+            <td>V, Cr, Mn, Fe, Ni, Co, Cu, Zn</td>
+            <td>Light–mid mass; excellent matrix correction</td>
+          </tr>
+          <tr>
+            <td><strong>⁷²Ge</strong></td>
+            <td>72</td>
+            <td>As, Se, Br</td>
+            <td>Good for elements measured in He or H₂ mode</td>
+          </tr>
+          <tr>
+            <td><strong>¹⁰³Rh</strong></td>
+            <td>103</td>
+            <td>Mo, Cd, Ag, Pd, Ru</td>
+            <td>Most widely used single ISTD in pharma ICP-MS</td>
+          </tr>
+          <tr>
+            <td><strong>¹¹⁵In</strong></td>
+            <td>115</td>
+            <td>Cd, Sn, Sb, Te</td>
+            <td>Good mid-to-heavy; check for In in samples</td>
+          </tr>
+          <tr>
+            <td><strong>¹⁸⁵Re</strong></td>
+            <td>185</td>
+            <td>Hg, Tl, Pb, Bi</td>
+            <td>Heavy element ISTD; very stable in acid</td>
+          </tr>
+          <tr>
+            <td><strong>²⁰⁹Bi</strong></td>
+            <td>209</td>
+            <td>Pb, U, Th</td>
+            <td>Monoisotopic; excellent high-mass ISTD</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-warn">
+      <span class="callout-icon">⚠️</span>
+      <p><strong>ISTD recovery monitoring:</strong> During every run, monitor ISTD recovery (signal in sample vs signal in calibration blank). If recovery falls outside 70–130%, flag the samples — your results may be compromised. This is a key system suitability check during routine analysis.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- SECTION 9: SAMPLE PREPARATION -->
+  <!-- ══════════════════════════════════ -->
+  <section id="sampleprep" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <h2>Sample Preparation Development</h2>
+    </div>
+
+    <div class="prose">
+      <p>The ICP-MS can only measure liquids. For solid pharmaceutical samples (tablets, capsules, raw materials), you must first <em>digest</em> them into a clear acid solution. The quality of your sample preparation directly limits the quality of your results — even the best-developed instrument method cannot compensate for a poor digest.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3><span class="icon">🔬</span> Microwave Acid Digestion (Gold Standard)</h3>
+        <p>Closed-vessel microwave digestion is the method of choice for pharmaceutical samples. Elevated pressure raises the boiling point of nitric acid, allowing complete dissolution of even difficult organic matrices.</p>
+        <ul style="margin-top:0.75rem;">
+          <li>Typical conditions: 170–200°C, 30–60 min, with HNO₃ (±H₂O₂)</li>
+          <li>Prevents volatile element loss (Hg, Se, As) that occurs in open digestion</li>
+          <li>Consistent — programmable temperature and pressure profiles</li>
+          <li>Add H₂O₂ (0.5–1 mL) for samples with high fat or protein content</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🧴</span> Dilute-and-Shoot</h3>
+        <p>For liquid pharmaceutical samples (solutions, syrups, injections), direct dilution in 1–5% HNO₃ may be sufficient without digestion.</p>
+        <ul style="margin-top:0.75rem;">
+          <li>Simple, fast, and avoids contamination risk from digestion</li>
+          <li>Requires validation that the matrix doesn't cause signal suppression</li>
+          <li>Use matrix matching or standard addition to compensate for matrix effects</li>
+          <li>Not suitable for solid samples or highly complex organic matrices</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card card-warning" style="margin-top:0;">
+      <h3><span class="icon">⚠️</span> Critical Sample Preparation Considerations</h3>
+      <div class="grid-2" style="margin-top:0.75rem;">
+        <ul>
+          <li><strong>Acid purity:</strong> Use trace-metal grade (Suprapur or equivalent) acids only. Analytical grade acids contain ppb-level metal impurities that will contaminate your digest</li>
+          <li><strong>Water purity:</strong> Use 18 MΩ·cm ultrapure water (e.g., Milli-Q) for all dilutions and standard preparation</li>
+          <li><strong>Vessel cleanliness:</strong> Digest vessels must be cleaned with hot HNO₃ between uses and rinsed with ultrapure water</li>
+        </ul>
+        <ul>
+          <li><strong>Mercury:</strong> Must be stabilized with gold solution (0.1% Au) immediately after digestion — Hg volatilizes out of HNO₃ over time</li>
+          <li><strong>HCl presence:</strong> If HCl is used (e.g., for complete dissolution), it creates ClAr⁺ interference on As. Design the method to account for this or remove HCl by evaporation</li>
+          <li><strong>Blank digests:</strong> Always run reagent blank digestions (no sample, full procedure) to assess contamination from reagents and vessels</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <h3>Digestion Procedure for Oral Solid Dosage Forms (Tablets/Capsules)</h3>
+      <div class="mono-block">
+1.  Weigh 0.5 g sample into a pre-cleaned PTFE microwave vessel
+2.  Add 8 mL concentrated HNO₃ (trace-metal grade)
+3.  Add 1 mL H₂O₂ (30%, trace-metal grade)
+4.  Allow to pre-react at room temperature for 15 minutes (cap open)
+5.  Seal vessel and place in microwave rotor
+6.  Microwave program:
+       Ramp to 150°C over 10 min
+       Hold at 150°C for 10 min
+       Ramp to 190°C over 10 min
+       Hold at 190°C for 15 min
+7.  Cool to room temperature (≥ 30 min)
+8.  Add 0.5 mL gold solution (1000 ppm Au) for Hg stabilization
+9.  Transfer to a 50 mL polypropylene volumetric flask
+10. Dilute to volume with 18 MΩ·cm water
+11. Final acid concentration: ~2% HNO₃
+12. Add ISTD mix at time of analysis
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- SECTION 10: VALIDATION -->
+  <!-- ══════════════════════════════════ -->
+  <section id="validation" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">10</span>
+      <h2>Method Validation</h2>
+    </div>
+
+    <div class="prose">
+      <p>Validation is the formal proof that your method works reliably under defined conditions. It is required by all regulatory agencies before a method is used for product release or regulatory submission. For pharmaceutical work at NPRA, ICH Q2(R1) defines the validation requirements.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>What It Proves</th>
+            <th>How to Determine</th>
+            <th>Acceptance Criterion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Linearity</strong></td>
+            <td>Calibration curve is valid across the working range</td>
+            <td>Minimum 5 calibration points across the range; plot response vs concentration</td>
+            <td>R² ≥ 0.999</td>
+          </tr>
+          <tr>
+            <td><strong>Accuracy (Recovery)</strong></td>
+            <td>Results match the true/certified value</td>
+            <td>Analyze certified reference material (CRM) or spiked samples at 50%, 100%, 150% of target concentration</td>
+            <td>Recovery 85–115% (ICH Q3D); or 70–130% depending on concentration level</td>
+          </tr>
+          <tr>
+            <td><strong>Repeatability (Precision)</strong></td>
+            <td>Results are consistent within a single run</td>
+            <td>Analyze same sample 6 times in one run</td>
+            <td>%RSD ≤ 10% (or ≤ 20% at LOQ level)</td>
+          </tr>
+          <tr>
+            <td><strong>Intermediate Precision</strong></td>
+            <td>Results are consistent across days/analysts/instruments</td>
+            <td>Analyze on ≥ 3 different days, by different analysts if possible</td>
+            <td>%RSD ≤ 15%</td>
+          </tr>
+          <tr>
+            <td><strong>LOD</strong></td>
+            <td>Lowest concentration that can be detected (not quantified)</td>
+            <td>3.3 × (SD of blank signal / slope of calibration curve)</td>
+            <td>Must be ≤ 30% of the specification limit</td>
+          </tr>
+          <tr>
+            <td><strong>LOQ</strong></td>
+            <td>Lowest concentration that can be quantified with acceptable precision and accuracy</td>
+            <td>10 × (SD of blank signal / slope of calibration curve)</td>
+            <td>Must be ≤ the specification limit; %RSD ≤ 20% at LOQ</td>
+          </tr>
+          <tr>
+            <td><strong>Specificity</strong></td>
+            <td>The method measures the target element, not something else</td>
+            <td>Analyze a blank matrix sample; check for interferences; demonstrate interference removal via MS/MS</td>
+            <td>No unacceptable interference at the target mass</td>
+          </tr>
+          <tr>
+            <td><strong>Robustness</strong></td>
+            <td>Small changes in conditions don't significantly affect results</td>
+            <td>Intentionally vary parameters (RF power ±50 W, acid concentration ±0.5%, cell gas flow ±0.2 mL/min) and measure impact on results</td>
+            <td>Results remain within acceptance criteria across tested variations</td>
+          </tr>
+          <tr>
+            <td><strong>Range</strong></td>
+            <td>The interval over which the method provides acceptable linearity, accuracy, and precision</td>
+            <td>Defined by the calibration range demonstrating acceptable linearity and accuracy</td>
+            <td>Must include all expected sample concentrations</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-warn">
+      <span class="callout-icon">📋</span>
+      <p><strong>ICH Q3D Note:</strong> For pharmaceutical elemental impurity testing specifically, USP ⟨233⟩ provides additional validation guidance. Required elements: accuracy at 50%, 100%, and 150% of the J-value (concentration equivalent of PDE), precision (n=9), LOQ demonstration, and specificity. Always check the specific guideline applicable to your submission.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- SECTION 11: TROUBLESHOOTING -->
+  <!-- ══════════════════════════════════ -->
+  <section id="troubleshoot" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">11</span>
+      <h2>Method Development Troubleshooting</h2>
+    </div>
+
+    <div class="prose">
+      <p>When results don't meet expectations during method development, use this systematic troubleshooting guide to identify the root cause before adjusting parameters.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card card-danger">
+        <h3><span class="icon">📉</span> Low Recovery / Low Sensitivity</h3>
+        <ul>
+          <li>Incomplete sample digestion → optimize digestion temperature or time; use CRM to verify</li>
+          <li>Wrong acid matrix → check acid type and concentration matches sample</li>
+          <li>Volatile element loss (Hg, As, Se) → use closed-vessel digestion; add Au for Hg</li>
+          <li>Poor nebulizer performance → check for blockage; replace if necessary</li>
+          <li>Dirty cones → clean or replace sampler/skimmer cones</li>
+          <li>ISTD signal also low → matrix suppression, not just that element; dilute sample further</li>
+        </ul>
+      </div>
+      <div class="card card-warning">
+        <h3><span class="icon">📈</span> High Results / Positive Bias</h3>
+        <ul>
+          <li>Spectral interference not fully resolved → verify with MS/MS mode; check alternative mass</li>
+          <li>Contamination from reagents → run reagent blank; switch to higher purity acid</li>
+          <li>Contamination from vessels → acid-clean vessels more rigorously</li>
+          <li>Carryover from previous high-concentration sample → extend rinse time; run rinse blank check</li>
+          <li>Matrix enhancement (signal higher in sample than in standards) → improve matrix matching; use standard addition</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:1.25rem;">
+      <div class="card">
+        <h3><span class="icon">📊</span> Poor Precision (%RSD > 10%)</h3>
+        <ul>
+          <li>Plasma instability → check Ar gas pressure and purity; allow longer warmup</li>
+          <li>Peristaltic pump tubing worn → replace tubing; check for air bubbles</li>
+          <li>Blocked or partially blocked nebulizer → clean or replace</li>
+          <li>Sample inhomogeneity → improve sample homogenization before analysis</li>
+          <li>ISTD correction not working → check ISTD is at correct concentration and not contaminating samples</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon">📉</span> Poor Linearity (R² &lt; 0.999)</h3>
+        <ul>
+          <li>Calibration range too wide → narrow the range; use two calibration curves for wide ranges</li>
+          <li>Detector saturation at high end → reduce highest standard concentration</li>
+          <li>Non-linear response at low end → check LOQ; remove the lowest point if it's below LOQ</li>
+          <li>Contaminated calibration blank → remake blank; check water and acid purity</li>
+          <li>Matrix effects varying across calibration levels → improve matrix matching</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- SECTION 12: PHARMA GUIDE -->
+  <!-- ══════════════════════════════════ -->
+  <section id="pharma" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">12</span>
+      <h2>Pharmaceutical Application — ICH Q3D Elemental Impurities</h2>
+    </div>
+
+    <div class="prose">
+      <p>The most relevant application for NPRA's Screening Unit is elemental impurity testing of pharmaceutical products per ICH Q3D. This section provides a complete, practical method development summary specific to this work.</p>
+    </div>
+
+    <div class="callout">
+      <span class="callout-icon">🏛️</span>
+      <p><strong>Regulatory framework:</strong> ICH Q3D defines Permitted Daily Exposures (PDEs) for 24 elemental impurities in pharmaceutical products, categorized into Class 1 (highest risk: As, Cd, Hg, Pb), Class 2A, 2B, and Class 3 elements. USP ⟨232⟩/⟨233⟩ and EP 5.20 provide the testing and validation requirements.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ICH Class</th>
+            <th>Elements</th>
+            <th>Oral PDE (μg/day)</th>
+            <th>Priority</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-red">Class 1</span></td>
+            <td>As, Cd, Hg, Pb</td>
+            <td>As: 15 | Cd: 5 | Hg: 30 | Pb: 5</td>
+            <td>Must always be controlled</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-amber">Class 2A</span></td>
+            <td>Co, Ni, V</td>
+            <td>Co: 50 | Ni: 200 | V: 100</td>
+            <td>Risk-assess all routes</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-blue">Class 2B</span></td>
+            <td>Ag, Au, Ir, Os, Pd, Pt, Rh, Ru, Se, Tl</td>
+            <td>Varies (see ICH Q3D table)</td>
+            <td>Risk-assess if likely to be present</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-teal">Class 3</span></td>
+            <td>Ba, Cr, Cu, Li, Mo, Sb, Sn</td>
+            <td>Cr: 1100 | Cu: 3000 | others vary</td>
+            <td>Include only if exposure likely</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="highlight-box">
+      <h3>Recommended 8900 Method Parameters for ICH Q3D</h3>
+      <div class="table-wrap" style="margin-top:1rem;">
+        <table>
+          <thead><tr><th>Element</th><th>Mass (Q1→Q2)</th><th>Cell Gas Mode</th><th>ISTD</th><th>Key Note</th></tr></thead>
+          <tbody>
+            <tr><td>As</td><td>75 → 75</td><td>MS/MS H₂ (on-mass)</td><td>⁷²Ge or ⁷⁴Ge</td><td>Removes ArCl⁺ completely</td></tr>
+            <tr><td>Cd</td><td>111 → 111</td><td>He collision</td><td>¹⁰³Rh or ¹¹⁵In</td><td>Avoid m/z 114 (Sn overlap)</td></tr>
+            <tr><td>Hg</td><td>202 → 202</td><td>No gas</td><td>¹⁸⁵Re or ²⁰⁹Bi</td><td>Add 0.1% Au in all solutions for stability</td></tr>
+            <tr><td>Pb</td><td>208 → 208</td><td>No gas or He</td><td>²⁰⁹Bi</td><td>Monoisotopic — only one mass available</td></tr>
+            <tr><td>Co</td><td>59 → 59</td><td>He collision</td><td>⁴⁵Sc</td><td>Check for CaO⁺ in high-Ca matrices</td></tr>
+            <tr><td>Ni</td><td>60 → 60</td><td>He collision</td><td>⁴⁵Sc</td><td>Avoid m/z 58 (Fe-based interference)</td></tr>
+            <tr><td>V</td><td>51 → 67</td><td>MS/MS O₂ (mass-shift to VO⁺)</td><td>⁴⁵Sc</td><td>ClO⁺ interference removed by Q1 pre-filter</td></tr>
+            <tr><td>Cr</td><td>52 → 52</td><td>He or MS/MS H₂</td><td>⁴⁵Sc</td><td>Use MS/MS for high-Cl matrices</td></tr>
+            <tr><td>Se</td><td>80 → 96</td><td>MS/MS O₂ (mass-shift to SeO⁺)</td><td>⁷²Ge</td><td>Completely removes Ar₂⁺ at m/z 80</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3><span class="icon">📋</span> Recommended ISTD Mix</h3>
+        <p>Prepare a single mixed ISTD solution in 2% HNO₃ containing:</p>
+        <ul style="margin-top:0.5rem; font-family:'IBM Plex Mono',monospace; font-size:0.8rem;">
+          <li>⁴⁵Sc — 10 ppb (covers light–mid mass)</li>
+          <li>⁷²Ge — 10 ppb (covers As, Se range)</li>
+          <li>¹⁰³Rh — 10 ppb (covers Cd, Ag, Pd range)</li>
+          <li>¹⁸⁵Re — 10 ppb (covers Hg, Tl, Pb range)</li>
+        </ul>
+        <p style="margin-top:0.75rem; font-size:0.88rem;">Add this ISTD mix online via a T-piece using the peristaltic pump for consistent delivery.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🎯</span> System Suitability Criteria</h3>
+        <p>Before each analytical run, verify:</p>
+        <ul style="margin-top:0.5rem;">
+          <li>R² ≥ 0.999 for all calibration curves</li>
+          <li>Calibration verification standard recovery: 95–105%</li>
+          <li>ISTD response within ±20% of calibration ISTD level</li>
+          <li>CRM recovery within ± 20% of certified value</li>
+          <li>Method blank below LOQ for all elements</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- RESOURCES -->
+  <!-- ══════════════════════════════════ -->
+  <section class="fade-in">
+    <div class="section-header">
+      <span class="section-num">13</span>
+      <h2>Further Reading & Official Resources</h2>
+    </div>
+
+    <div class="grid-3">
+      <div class="card card-accent">
+        <h3><span class="icon">📘</span> Agilent ICP-QQQ Applications Handbook</h3>
+        <p>Over 80 detailed application notes covering method development for a wide range of sample types. Free download from Agilent. The single best starting reference.</p>
+        <div class="pill-row"><span class="badge badge-teal">Free Download</span><span class="badge badge-blue">Agilent.com</span></div>
+      </div>
+      <div class="card card-accent">
+        <h3><span class="icon">📗</span> Practical Guide to ICP-MS</h3>
+        <p>By Robert Thomas. The best beginner-to-intermediate book for ICP-MS analysts. Explains the theory behind every instrument parameter in plain language.</p>
+        <div class="pill-row"><span class="badge badge-amber">Textbook</span><span class="badge badge-blue">CRC Press</span></div>
+      </div>
+      <div class="card card-accent">
+        <h3><span class="icon">🖥️</span> Agilent eLearning Portal</h3>
+        <p>Free online training modules at education.agilent.com covering ICP-MS operation, method development, and maintenance for the 8900 specifically.</p>
+        <div class="pill-row"><span class="badge badge-green">Free</span><span class="badge badge-teal">Online</span></div>
+      </div>
+      <div class="card">
+        <h3><span class="icon">📰</span> JAAS Journal</h3>
+        <p>Journal of Analytical Atomic Spectrometry (Royal Society of Chemistry). Peer-reviewed method development papers. Search for your specific matrix and elements.</p>
+        <div class="pill-row"><span class="badge badge-blue">Academic</span></div>
+      </div>
+      <div class="card">
+        <h3><span class="icon">📋</span> ICH Q3D Guideline</h3>
+        <p>The pharmaceutical industry standard for elemental impurity control. Available free from ich.org. Essential reading for NPRA screening work.</p>
+        <div class="pill-row"><span class="badge badge-amber">Regulatory</span><span class="badge badge-teal">ich.org</span></div>
+      </div>
+      <div class="card">
+        <h3><span class="icon">💬</span> Agilent Community Forum</h3>
+        <p>Peer support, troubleshooting discussions, and knowledge articles from experienced 8900 users worldwide. At community.agilent.com.</p>
+        <div class="pill-row"><span class="badge badge-green">Free</span><span class="badge badge-blue">Online Forum</span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div>⬡ <span>Agilent 8900 ICP-QQQ</span> — Method Development Guide</div>
+  <div>Prepared for <span>NPRA Screening Unit</span> · Malaysia</div>
+  <div>Reference: <span>ICH Q3D · USP ⟨232⟩/⟨233⟩ · EP 5.20</span></div>
+</footer>
+
+<script>
+  // Intersection Observer for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Active nav highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.style.color = '';
+          link.style.background = '';
+          if (link.getAttribute('href') === '#' + entry.target.id) {
+            link.style.color = 'var(--accent)';
+            link.style.background = 'rgba(0,212,200,0.07)';
+          }
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(s => navObserver.observe(s));
+</script>
+
+</body>
+</html>
