@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 3: MassHunter Software & Tuning — Agilent 8900 ICP-MS Guide</title>
+<meta name="description" content="MassHunter Workstation navigation, autotune procedures, performance optimization, and cell gas mode configuration for the Agilent 8900 ICP-QQQ.">
+<link rel="icon" type="image/png" href="https://syariefazman.com/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-canvas"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+<div class="grid-overlay"></div>
+
+<div class="main">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="ctrl-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All Chapters
+      </a>
+    </div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+      <button class="ctrl-btn" onclick="toggleTheme()" id="themeBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="themeTxt">Dark Mode</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-org">🇲🇾 NPRA — Agilent 8900 ICP-MS Guide</div><br>
+    <div class="hero-instrument">Chapter 03</div>
+    <h1>MassHunter <span class="g">Software & Tuning</span></h1>
+    <div class="hero-sub">Instrument Control, Optimization & Performance Verification</div>
+  </div>
+
+  <div class="content">
+
+    <h2 class="reveal">MassHunter Workstation Overview</h2>
+    <p class="reveal">
+      The <strong>Agilent ICP-MS MassHunter Workstation</strong> is the integrated software platform for controlling the Agilent 8900 ICP-QQQ. It provides a unified environment for instrument setup, data acquisition, and results analysis.
+    </p>
+
+    <h3 class="reveal">Main Interface Areas</h3>
+    <p class="reveal">The MassHunter interface is organised with a <strong>ribbon toolbar</strong> at the top and a <strong>task navigator</strong> on the left. The key tabs and functional areas are:</p>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Tab / Area</th><th>Function</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Home → Startup</strong></td><td>Instrument status, plasma control, warm-up checks, performance reports</td></tr>
+          <tr><td><strong>Home → Tune</strong></td><td>Autotune, manual tune, tune parameters, torch optimization</td></tr>
+          <tr><td><strong>Acquisition</strong></td><td>Method setup, element selection, cell gas modes, acquisition parameters</td></tr>
+          <tr><td><strong>Sequence</strong></td><td>Sample list / batch table, sample types, file naming, autosampler positions</td></tr>
+          <tr><td><strong>Queue</strong></td><td>Current acquisition queue, pending and completed runs</td></tr>
+          <tr><td><strong>Data Analysis</strong></td><td>FullQuant, SemiQuant, calibration curves, Batch-at-a-Glance, reports</td></tr>
+          <tr><td><strong>Maintenance</strong></td><td>Early Maintenance Feedback (EMF), maintenance logs, component status</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="reveal">Autotune Procedure</h2>
+    <p class="reveal">
+      The <strong>Autotune</strong> optimises critical instrument parameters to achieve maximum sensitivity and stability. It should be run <strong>after plasma warm-up</strong> (at least 15–30 minutes) and whenever the instrument has been serviced, cones cleaned, or tubing changed.
+    </p>
+
+    <h3 class="reveal">What Autotune Optimises</h3>
+    <ul class="reveal">
+      <li><strong>Plasma Sampling Depth (Torch Z-axis):</strong> Adjusts the position of the torch relative to the sampling cone to optimise ion extraction efficiency.</li>
+      <li><strong>Nebulizer Gas Flow:</strong> Fine-tunes the carrier gas flow rate to optimise aerosol generation and transport.</li>
+      <li><strong>Ion Lens Voltages:</strong> Optimises extraction lens, omega lens, and deflection lens voltages for maximum ion transmission.</li>
+      <li><strong>Cell Parameters:</strong> Sets collision/reaction cell gas flows and bias voltages for each tune mode (No Gas, He, O₂, NH₃).</li>
+    </ul>
+
+    <h3 class="reveal">Running Autotune — Step by Step</h3>
+    <ol class="step-list reveal">
+      <li><strong>Prepare the tuning solution:</strong> Place the sample uptake line into the <strong>Agilent ICP-MS Tuning Solution</strong> (typically 1 ppb each of Li, Y, Ce, Tl, Co in 2% HNO₃). Use the Agilent-recommended tuning standard.</li>
+      <li><strong>Navigate to the Tune tab:</strong> In MassHunter, go to <strong>Home → Tune</strong>.</li>
+      <li><strong>Select Autotune:</strong> Click <strong>"Autotune"</strong> to begin the automated optimization. The software will sequentially optimise plasma position, nebulizer gas, lenses, and cell parameters.</li>
+      <li><strong>Wait for completion:</strong> The autotune typically takes <strong>5–15 minutes</strong> depending on the number of modes being optimised.</li>
+      <li><strong>Review results:</strong> After autotune completes, review the optimised parameters. Confirm the tune values are reasonable and within expected ranges.</li>
+      <li><strong>Run Performance Report:</strong> Execute the <strong>Performance Report</strong> to verify the instrument meets acceptance criteria.</li>
+    </ol>
+
+    <div class="info-box tip reveal">
+      <div class="box-title">💡 Autotune Best Practices</div>
+      <ul>
+        <li>Always use <strong>fresh tuning solution</strong> — standards degrade over time, especially at 1 ppb level.</li>
+        <li>Allow the tuning solution to aspirate for <strong>at least 1 minute</strong> before starting autotune to ensure a stable signal.</li>
+        <li>Save successful tune files with the <strong>date</strong> for historical tracking.</li>
+        <li>If autotune results are unusually different from previous tunes, investigate hardware (cones, tubing, torch) before accepting.</li>
+      </ul>
+    </div>
+
+    <h2 class="reveal">Cell Gas Modes</h2>
+    <p class="reveal">
+      The Agilent 8900 can operate in multiple cell gas modes. Each mode is optimised for removing specific types of interferences. The correct mode is selected based on the analyte and the sample matrix.
+    </p>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Mode</th><th>Gas</th><th>Mechanism</th><th>Best For</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>No Gas</strong></td>
+            <td>—</td>
+            <td>No interference removal</td>
+            <td>Interference-free masses (e.g., ²⁰⁸Pb, ²⁰⁹Bi)</td>
+          </tr>
+          <tr>
+            <td><strong>He Mode</strong></td>
+            <td>Helium</td>
+            <td>Kinetic Energy Discrimination (KED)</td>
+            <td>General polyatomic removal (routine use)</td>
+          </tr>
+          <tr>
+            <td><strong>O₂ MS/MS</strong></td>
+            <td>Oxygen</td>
+            <td>Mass-shift reaction (M → MO⁺)</td>
+            <td>As, Se, P, S, Si (shift to oxide mass)</td>
+          </tr>
+          <tr>
+            <td><strong>NH₃ MS/MS</strong></td>
+            <td>Ammonia</td>
+            <td>Charge transfer / clustering</td>
+            <td>Transition metals, Ti, V, Cr, Fe in complex matrices</td>
+          </tr>
+          <tr>
+            <td><strong>H₂ MS/MS</strong></td>
+            <td>Hydrogen</td>
+            <td>Selective reaction</td>
+            <td>⁴⁰Ca (from ⁴⁰Ar), ⁸⁰Se (from ⁴⁰Ar₂)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box note reveal">
+      <div class="box-title">📌 For Pharmaceutical Heavy Metal Analysis</div>
+      For routine USP ⟨233⟩ heavy metal testing (As, Hg, Pb, Cd), the typical configuration is:
+      <ul style="margin-top:0.5rem">
+        <li><strong>⁷⁵As</strong> → O₂ MS/MS mode (measured as ⁷⁵As¹⁶O⁺ at m/z 91)</li>
+        <li><strong>²⁰²Hg</strong> → No Gas mode or He mode</li>
+        <li><strong>²⁰⁸Pb</strong> → No Gas mode</li>
+        <li><strong>¹¹¹Cd, ¹¹⁴Cd</strong> → He mode or No Gas mode</li>
+      </ul>
+    </div>
+
+    <h2 class="reveal">Performance Report</h2>
+    <p class="reveal">
+      The <strong>Performance Report</strong> is an automated diagnostic that evaluates key instrument parameters against predefined acceptance criteria. It should be run:
+    </p>
+    <ul class="reveal">
+      <li>Daily — at the start of each analysis session, after autotune</li>
+      <li>After any maintenance (cone cleaning, torch replacement, tubing change)</li>
+      <li>When results appear anomalous</li>
+    </ul>
+
+    <h3 class="reveal">Key Performance Metrics</h3>
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Parameter</th><th>Typical Specification</th><th>What It Measures</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Sensitivity (cps/ppb)</strong></td><td>&gt; 500M (⁷Li), &gt; 1000M (⁸⁹Y)</td><td>Ion count per ppb — instrument sensitivity</td></tr>
+          <tr><td><strong>Background (m/z 220)</strong></td><td>&lt; 1 cps</td><td>Detector noise in a mass-free region</td></tr>
+          <tr><td><strong>Oxide Ratio (CeO/Ce)</strong></td><td>&lt; 1.5%</td><td>Degree of oxide formation in the plasma</td></tr>
+          <tr><td><strong>Doubly Charged (Ce²⁺/Ce⁺)</strong></td><td>&lt; 2%</td><td>Degree of double ionisation</td></tr>
+          <tr><td><strong>Short-term RSD</strong></td><td>&lt; 3% (10 replicates)</td><td>Signal stability over short time</td></tr>
+          <tr><td><strong>Mass Resolution</strong></td><td>~0.7 amu (10% peak height)</td><td>Ability to separate adjacent masses</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="reveal">IntelliQuant Assistant</h2>
+    <p class="reveal">
+      <strong>IntelliQuant</strong> is a semi-quantitative analysis tool built into MassHunter. It performs a rapid, full-mass-range scan of the sample and estimates concentrations for all detectable elements — without requiring element-specific calibration standards.
+    </p>
+    <p class="reveal">IntelliQuant is useful for:</p>
+    <ul class="reveal">
+      <li><strong>Unknown sample screening:</strong> Quickly identify which elements are present and at what approximate concentration.</li>
+      <li><strong>Method development assistance:</strong> The IntelliQuant Assistant can <strong>pre-select the preferred cell mode</strong> for each analyte based on the scan results, simplifying method setup.</li>
+      <li><strong>Matrix characterisation:</strong> Understand the composition of your sample matrix before running quantitative analysis.</li>
+    </ul>
+
+    <h2 class="reveal">Early Maintenance Feedback (EMF)</h2>
+    <p class="reveal">
+      The <strong>EMF</strong> feature in MassHunter tracks the usage of consumable components (cones, tubing, torch) and alerts you when maintenance is due. It helps prevent unexpected failures by scheduling preventive maintenance.
+    </p>
+    <p class="reveal">EMF tracks parameters such as:</p>
+    <ul class="reveal">
+      <li>Total plasma-on time</li>
+      <li>Number of acquisition sequences completed</li>
+      <li>Interface cone usage hours</li>
+      <li>Peristaltic pump tubing usage</li>
+    </ul>
+
+    <div class="info-box tip reveal">
+      <div class="box-title">💡 Record Keeping</div>
+      Always save a copy of each day's <strong>Performance Report</strong> and <strong>Tune File</strong> in a dedicated folder with the date. This historical data is invaluable for tracking instrument trends, diagnosing gradual performance degradation, and demonstrating instrument fitness during audits.
+    </div>
+
+  </div>
+
+  <div class="chapter-nav reveal">
+    <a href="chapter2.html" class="nav-prev">
+      <div class="nav-label">Previous Chapter</div>
+      <div class="nav-title">Startup & Shutdown</div>
+    </a>
+    <a href="chapter4.html" class="nav-next">
+      <div class="nav-label">Next Chapter</div>
+      <div class="nav-title">Sample Preparation & Acid Digestion</div>
+    </a>
+  </div>
+
+  <div class="footer">Agilent 8900 ICP-MS Operation Guide ◈ Chapter 3 ◈ NPRA Malaysia ◈ Syarief Azman</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

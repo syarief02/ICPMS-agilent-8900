@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 4: Sample Preparation & Acid Digestion — Agilent 8900 ICP-MS Guide</title>
+<meta name="description" content="Acid digestion techniques, standard preparation, glassware decontamination, and spike recovery for pharmaceutical ICP-MS analysis.">
+<link rel="icon" type="image/png" href="https://syariefazman.com/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-canvas"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+<div class="grid-overlay"></div>
+
+<div class="main">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="ctrl-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All Chapters
+      </a>
+    </div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+      <button class="ctrl-btn" onclick="toggleTheme()" id="themeBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="themeTxt">Dark Mode</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-org">🇲🇾 NPRA — Agilent 8900 ICP-MS Guide</div><br>
+    <div class="hero-instrument">Chapter 04</div>
+    <h1>Sample Preparation & <span class="g">Acid Digestion</span></h1>
+    <div class="hero-sub">From Raw Sample to ICP-MS Ready Solution</div>
+  </div>
+
+  <div class="content">
+
+    <h2 class="reveal">Why Sample Preparation Matters</h2>
+    <p class="reveal">
+      ICP-MS requires samples in <strong>liquid (solution) form</strong>. The quality of sample preparation directly impacts the accuracy, precision, and reliability of results. Contamination, incomplete dissolution, or matrix effects can all lead to erroneous data.
+    </p>
+    <p class="reveal">
+      For pharmaceutical heavy metal analysis per USP ⟨233⟩, sample preparation must ensure <strong>complete dissolution</strong> of the sample with <strong>quantitative recovery</strong> of all target analytes (As, Hg, Pb, Cd at minimum).
+    </p>
+
+    <h2 class="reveal">Sample Preparation Methods (USP ⟨233⟩)</h2>
+    <p class="reveal">USP ⟨233⟩ describes four acceptable sample preparation approaches:</p>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Method</th><th>Description</th><th>When to Use</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Neat Analysis</strong></td>
+            <td>Direct introduction of the liquid sample without dilution</td>
+            <td>Suitable liquid formulations with low dissolved solids</td>
+          </tr>
+          <tr>
+            <td><strong>Direct Aqueous Solution</strong></td>
+            <td>Dissolve sample in water or dilute acid (e.g., 2% HNO₃)</td>
+            <td>Water-soluble samples (tablets, capsules dissolved in acid)</td>
+          </tr>
+          <tr>
+            <td><strong>Direct Organic Solution</strong></td>
+            <td>Dissolve in organic solvents (e.g., methanol, ethanol)</td>
+            <td>Samples soluble only in organic solvents. Requires special ICP-MS config.</td>
+          </tr>
+          <tr>
+            <td><strong>Indirect Solution (Acid Digestion)</strong></td>
+            <td>Decompose sample using concentrated acids under heat/pressure</td>
+            <td>Insoluble samples, complex organic matrices, solids</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box note reveal">
+      <div class="box-title">📌 Most Common at NPRA</div>
+      The most frequently used methods at NPRA for pharmaceutical products are <strong>Direct Aqueous Solution</strong> (for soluble tablets/capsules) and <strong>Closed-Vessel Microwave Acid Digestion</strong> (for insoluble or complex matrices).
+    </div>
+
+    <h2 class="reveal">Acid Digestion — Closed-Vessel Microwave Method</h2>
+    <p class="reveal">
+      Microwave-assisted acid digestion is the preferred technique for solid pharmaceutical samples. The closed-vessel design prevents loss of volatile elements (especially <strong>mercury</strong>) and provides faster, more complete digestion.
+    </p>
+
+    <h3 class="reveal">Reagents Required</h3>
+    <ul class="reveal">
+      <li><strong>Concentrated Nitric Acid (HNO₃):</strong> Ultra-high purity grade (trace metal grade / Suprapur). The primary digestion acid — effective for most organic matrices.</li>
+      <li><strong>Hydrogen Peroxide (H₂O₂):</strong> 30%, high purity. Used alongside HNO₃ to improve oxidation of organic matter.</li>
+      <li><strong>Hydrochloric Acid (HCl):</strong> Trace metal grade (optional). May be added for mercury stabilisation or difficult matrices.</li>
+      <li><strong>Ultrapure Deionised Water:</strong> ≥ 18.2 MΩ·cm resistivity. For all dilutions, rinsing, and blank preparation.</li>
+    </ul>
+
+    <h3 class="reveal">Digestion Procedure</h3>
+    <ol class="step-list reveal">
+      <li><strong>Weigh the sample:</strong> Accurately weigh approximately <strong>0.2–0.5 g</strong> of the pharmaceutical sample into a clean, decontaminated microwave digestion vessel (PTFE/TFM liner). Record the exact weight.</li>
+      <li><strong>Add acid:</strong> Add <strong>5–7 mL of concentrated HNO₃</strong> to the vessel. For high-organic samples, add <strong>1–2 mL of H₂O₂</strong>. Allow the mixture to pre-react (pre-digest) at room temperature for <strong>15–30 minutes</strong> with the cap loosely placed.</li>
+      <li><strong>Seal and load:</strong> Securely cap the vessels and place them in the microwave turntable. Ensure vessels are balanced and properly positioned.</li>
+      <li><strong>Run microwave programme:</strong> A typical programme ramps to <strong>180–200 °C</strong> over 15–20 minutes, holds at peak temperature for <strong>15–20 minutes</strong>, then cools down. Follow your laboratory's validated microwave programme.</li>
+      <li><strong>Cool and vent:</strong> After the programme completes, allow vessels to cool to below <strong>50 °C</strong> before opening. Vent carefully in a fume hood — residual pressure may be present.</li>
+      <li><strong>Transfer and dilute:</strong> Quantitatively transfer the digest to a <strong>volumetric flask</strong> (typically 25 or 50 mL). Rinse the vessel with ultrapure water several times and add rinses to the flask. Dilute to volume with ultrapure water.</li>
+      <li><strong>Filter if necessary:</strong> If any undissolved particulate remains, filter through a <strong>0.45 μm PTFE syringe filter</strong> to prevent nebulizer blockage.</li>
+    </ol>
+
+    <div class="info-box danger reveal">
+      <div class="box-title">🚫 Safety — Acid Handling</div>
+      <strong>Always wear appropriate PPE</strong> — lab coat, safety goggles/face shield, and acid-resistant gloves. Work in a fume hood when handling concentrated acids. Never add water to concentrated acid — always add acid to water when diluting. Microwave digestion vessels are pressurised — never open while hot.
+    </div>
+
+    <h2 class="reveal">Glassware & Plasticware Decontamination</h2>
+    <p class="reveal">
+      Trace metal analysis at ppb/ppt levels requires scrupulously clean labware. Contamination from glassware is a common source of analytical error.
+    </p>
+
+    <h3 class="reveal">Cleaning Protocol</h3>
+    <ol class="step-list reveal">
+      <li><strong>Initial wash:</strong> Wash all volumetric flasks, pipettes, and beakers with laboratory detergent and rinse with tap water.</li>
+      <li><strong>Acid soak:</strong> Soak in <strong>10–20% (v/v) HNO₃</strong> bath for at least <strong>24 hours</strong> (overnight minimum).</li>
+      <li><strong>Rinse thoroughly:</strong> Remove from acid bath and rinse at least <strong>5 times</strong> with ultrapure deionised water.</li>
+      <li><strong>Dry:</strong> Allow to air-dry in a clean, dust-free area (e.g., inside a laminar flow hood). Do not use paper towels to dry — they introduce particulate contamination.</li>
+      <li><strong>Store:</strong> Store cleaned labware capped or inverted in clean plastic bags until use.</li>
+    </ol>
+
+    <div class="info-box tip reveal">
+      <div class="box-title">💡 Use Plasticware When Possible</div>
+      For trace metal work, <strong>PFA, PTFE, or PP (polypropylene)</strong> containers are preferred over borosilicate glass, as glass can leach trace amounts of metals (Si, B, Na, Al). Use PFA volumetric flasks and PP autosampler tubes whenever available.
+    </div>
+
+    <h2 class="reveal">Standard Preparation</h2>
+    <p class="reveal">
+      Accurate quantification requires well-prepared calibration standards and quality control solutions.
+    </p>
+
+    <h3 class="reveal">Calibration Standards</h3>
+    <ul class="reveal">
+      <li>Prepare a <strong>minimum of 5 calibration standards</strong> covering the expected concentration range, plus a <strong>calibration blank</strong> (acid/matrix blank).</li>
+      <li>Use <strong>certified reference material (CRM)</strong> stock solutions from reputable suppliers (e.g., Agilent, Inorganic Ventures, Merck).</li>
+      <li>Prepare standards in the <strong>same acid matrix</strong> as the digested samples (typically 2–5% HNO₃).</li>
+      <li>Prepare standards <strong>fresh daily</strong> — low-level ppb standards are unstable and can adsorb to container walls.</li>
+      <li>A typical calibration range for heavy metals: <strong>0, 0.1, 0.5, 1.0, 5.0, 10.0 ppb</strong>.</li>
+    </ul>
+
+    <h3 class="reveal">Internal Standard (ISTD)</h3>
+    <p class="reveal">
+      An <strong>internal standard</strong> is added to all samples, standards, and blanks at a constant concentration to correct for matrix effects, instrument drift, and physical interferences. Common ISTDs for heavy metal analysis:
+    </p>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Internal Standard</th><th>Mass (m/z)</th><th>Corrects For (Analyte)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>⁷²Ge</strong></td><td>72</td><td>⁷⁵As (nearby mass)</td></tr>
+          <tr><td><strong>¹⁰³Rh</strong></td><td>103</td><td>¹¹¹Cd, ¹¹⁴Cd (mid-mass)</td></tr>
+          <tr><td><strong>¹⁹³Ir</strong></td><td>193</td><td>²⁰²Hg, ²⁰⁸Pb (high mass)</td></tr>
+          <tr><td><strong>²⁰⁹Bi</strong></td><td>209</td><td>²⁰⁸Pb (adjacent mass)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="reveal">
+      The ISTD is typically prepared as a combined solution at <strong>10–50 ppb</strong> each in 2% HNO₃ and introduced via a <strong>T-connector</strong> or a second channel of the peristaltic pump for online mixing with the sample stream.
+    </p>
+
+    <h3 class="reveal">Quality Control (QC) Solutions</h3>
+    <ul class="reveal">
+      <li><strong>Continuing Calibration Verification (CCV):</strong> A mid-range standard run every 10–20 samples to verify calibration stability. Must recover within ±10% of the expected value.</li>
+      <li><strong>Continuing Calibration Blank (CCB):</strong> A blank run after the CCV to check for carryover contamination.</li>
+      <li><strong>Laboratory Fortified Blank (LFB):</strong> A blank spiked at a known concentration to verify method accuracy.</li>
+    </ul>
+
+    <h2 class="reveal">Spike Recovery (USP ⟨233⟩ Requirement)</h2>
+    <p class="reveal">
+      USP ⟨233⟩ requires <strong>spiked samples</strong> to validate the accuracy of the analytical procedure. Samples are spiked with known amounts of each target element <strong>before</strong> sample preparation to verify that the entire method (digestion + analysis) achieves acceptable recovery.
+    </p>
+
+    <div class="spec-grid reveal">
+      <div class="spec-card">
+        <div class="spec-value">70–150 <span class="unit">%</span></div>
+        <div class="spec-label">Acceptance Range (USP ⟨233⟩)</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-value">J <span class="unit">value</span></div>
+        <div class="spec-label">Spike Level = Specification Limit</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-value">0.5J–1.5J <span class="unit">range</span></div>
+        <div class="spec-label">Spike Range Accepted</div>
+      </div>
+    </div>
+
+    <h3 class="reveal">Spike Recovery Procedure</h3>
+    <ol class="step-list reveal">
+      <li><strong>Determine J value:</strong> The J value is the <strong>specification limit</strong> for each element in the sample (based on USP ⟨232⟩ limits and the daily dose). For example, if the Pb limit is 0.5 μg/g and the sample weight is 0.5 g in 50 mL, the J value in solution is the equivalent ppb target.</li>
+      <li><strong>Prepare spiked sample:</strong> Weigh a second aliquot of the same sample. Add a known volume of the reference standard to achieve a spike level at <strong>the J concentration</strong> (target specification level). Record the exact spike amount.</li>
+      <li><strong>Process identically:</strong> Subject both the unspiked and spiked samples to the <strong>same preparation procedure</strong> (digestion, dilution).</li>
+      <li><strong>Analyse both:</strong> Run both on the ICP-MS in the same batch with the same calibration.</li>
+      <li><strong>Calculate recovery:</strong><br>
+        <code>% Recovery = [(Spiked result − Unspiked result) / Spike amount added] × 100</code>
+      </li>
+      <li><strong>Acceptance:</strong> Recovery must be within <strong>70–150%</strong> for each target element. If not, investigate and repeat.</li>
+    </ol>
+
+    <div class="info-box warn reveal">
+      <div class="box-title">⚠️ Mercury Considerations</div>
+      Mercury (Hg) is volatile and can be lost during open-vessel digestion or if the sample is heated without a capping the vessel. Always use <strong>closed-vessel microwave digestion</strong> for samples requiring Hg analysis. Adding a small amount of <strong>HCl</strong> (gold/HCl stabiliser) can help prevent Hg adsorption to vessel walls.
+    </div>
+
+  </div>
+
+  <div class="chapter-nav reveal">
+    <a href="chapter3.html" class="nav-prev">
+      <div class="nav-label">Previous Chapter</div>
+      <div class="nav-title">MassHunter Software & Tuning</div>
+    </a>
+    <a href="chapter5.html" class="nav-next">
+      <div class="nav-label">Next Chapter</div>
+      <div class="nav-title">Method Development & Data Acquisition</div>
+    </a>
+  </div>
+
+  <div class="footer">Agilent 8900 ICP-MS Operation Guide ◈ Chapter 4 ◈ NPRA Malaysia ◈ Syarief Azman</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

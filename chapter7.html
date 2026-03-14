@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 7: Regulatory Compliance — USP & ICH Q3D — Agilent 8900 ICP-MS Guide</title>
+<meta name="description" content="USP 232/233 elemental impurity limits and procedures, ICH Q3D risk assessment, target elements, and validation for pharmaceutical ICP-MS analysis.">
+<link rel="icon" type="image/png" href="https://syariefazman.com/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-canvas"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+<div class="grid-overlay"></div>
+
+<div class="main">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="ctrl-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All Chapters
+      </a>
+    </div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+      <button class="ctrl-btn" onclick="toggleTheme()" id="themeBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="themeTxt">Dark Mode</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-org">🇲🇾 NPRA — Agilent 8900 ICP-MS Guide</div><br>
+    <div class="hero-instrument">Chapter 07</div>
+    <h1>Regulatory <span class="g">Compliance</span></h1>
+    <div class="hero-sub">USP ⟨232⟩/⟨233⟩ & ICH Q3D — Elemental Impurities</div>
+  </div>
+
+  <div class="content">
+
+    <h2 class="reveal">Overview of Regulatory Framework</h2>
+    <p class="reveal">
+      The pharmaceutical industry is governed by strict regulations on elemental impurities (heavy metals) to protect patient safety. The three key documents forming the regulatory framework are:
+    </p>
+    <ul class="reveal">
+      <li><strong>ICH Q3D:</strong> Guideline for Elemental Impurities — the international harmonised guideline that establishes <strong>Permitted Daily Exposures (PDEs)</strong> for 24 elements based on toxicity data.</li>
+      <li><strong>USP ⟨232⟩:</strong> Elemental Impurities — Limits — defines the <strong>concentration limits</strong> for elemental impurities in drug products, drug substances, and excipients based on ICH Q3D PDEs.</li>
+      <li><strong>USP ⟨233⟩:</strong> Elemental Impurities — Procedures — specifies the <strong>analytical procedures</strong> (ICP-OES and ICP-MS) for testing elemental impurities, including method validation requirements.</li>
+    </ul>
+
+    <div class="info-box note reveal">
+      <div class="box-title">📌 Historical Context</div>
+      These chapters replaced the older <strong>USP ⟨231⟩ Heavy Metals Limit Test</strong>, which used a colorimetric (sulfide precipitation) method. The legacy test was non-specific, insensitive, and could not individually quantify specific elements. Modern ICP-MS provides element-specific, quantitative analysis at much lower detection limits.
+    </div>
+
+    <h2 class="reveal">ICH Q3D — Element Classification</h2>
+    <p class="reveal">
+      ICH Q3D classifies 24 target elements into four classes based on their <strong>toxicity</strong> and <strong>likelihood of occurrence</strong> in drug products:
+    </p>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Class</th><th>Elements</th><th>Risk Level</th><th>Requirement</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Class 1</strong><br><span style="color:var(--red);font-size:0.7rem">Highest Toxicity</span></td>
+            <td>As, Cd, Hg, Pb</td>
+            <td>Significant toxicity in all routes of administration</td>
+            <td>Must <strong>always</strong> be evaluated for all drug products</td>
+          </tr>
+          <tr>
+            <td><strong>Class 2A</strong><br><span style="color:var(--amber);font-size:0.7rem">High Toxicity</span></td>
+            <td>Co, Ni, V</td>
+            <td>High toxicity; relatively high probability of occurrence</td>
+            <td>Risk assessment required; analyse if indicated</td>
+          </tr>
+          <tr>
+            <td><strong>Class 2B</strong><br><span style="color:var(--amber);font-size:0.7rem">High Toxicity</span></td>
+            <td>Ag, Au, Ir, Os, Pd, Pt, Rh, Ru, Se, Tl</td>
+            <td>High toxicity; low natural occurrence</td>
+            <td>Analyse if intentionally added or risk assessment indicates</td>
+          </tr>
+          <tr>
+            <td><strong>Class 3</strong><br><span style="color:var(--mint);font-size:0.7rem">Low Toxicity</span></td>
+            <td>Ba, Cr, Cu, Li, Mo, Mn, Sb, Sn</td>
+            <td>Relatively low toxicity via oral route; higher by parenteral/inhalation</td>
+            <td>Evaluate for parenteral/inhalation products; oral generally safe</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="reveal">USP ⟨232⟩ — Concentration Limits</h2>
+    <p class="reveal">
+      USP ⟨232⟩ sets concentration limits (μg/g) based on the <strong>maximum daily dose</strong> and <strong>route of administration</strong>. The limits are derived from ICH Q3D PDEs using the formula:
+    </p>
+    <p class="reveal" style="text-align:center;font-family:'DM Mono',monospace;font-size:0.9rem;color:var(--cyan);margin:1rem 0">
+      Concentration Limit (μg/g) = PDE (μg/day) ÷ Maximum Daily Dose (g/day)
+    </p>
+
+    <h3 class="reveal">Class 1 Element Limits (Oral Products)</h3>
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Element</th><th>PDE (μg/day)</th><th>Limit at 10 g/day dose (μg/g)</th><th>Option 1 Limit (μg/g)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Arsenic (As)</strong></td><td>15</td><td>1.5</td><td>1.5</td></tr>
+          <tr><td><strong>Cadmium (Cd)</strong></td><td>5</td><td>0.5</td><td>0.5</td></tr>
+          <tr><td><strong>Lead (Pb)</strong></td><td>5</td><td>0.5</td><td>0.5</td></tr>
+          <tr><td><strong>Mercury (Hg)</strong></td><td>30 (inorganic) / 10 (methylmercury)</td><td>3.0</td><td>3.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box warn reveal">
+      <div class="box-title">⚠️ Option 1 vs Option 2</div>
+      <strong>Option 1:</strong> Uses a default maximum daily dose of 10 g/day — gives conservative fixed limits applicable to any product. Most labs use this approach for screening.<br>
+      <strong>Option 2:</strong> Uses the actual maximum daily dose of the specific product — gives product-specific limits. Used when the daily dose is known and Option 1 limits are too restrictive.
+    </div>
+
+    <h2 class="reveal">USP ⟨233⟩ — Analytical Procedures</h2>
+    <p class="reveal">
+      USP ⟨233⟩ specifies two primary procedures for elemental impurity testing:
+    </p>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Procedure</th><th>Technique</th><th>Best For</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Procedure 1</strong></td>
+            <td>ICP-OES (Inductively Coupled Plasma – Optical Emission Spectroscopy)</td>
+            <td>Higher-concentration elements; less sensitive; simpler to operate</td>
+          </tr>
+          <tr>
+            <td><strong>Procedure 2</strong></td>
+            <td>ICP-MS (Inductively Coupled Plasma – Mass Spectrometry)</td>
+            <td>Trace-level analysis; higher sensitivity; required for Class 1 elements at low limits</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box note reveal">
+      <div class="box-title">📌 At NPRA</div>
+      NPRA uses <strong>Procedure 2 (ICP-MS)</strong> with the Agilent 8900 ICP-QQQ for all heavy metal limit tests. The sub-ppb sensitivity of the ICP-MS is necessary to meet the low concentration limits for As, Cd, Pb, and Hg specified in USP ⟨232⟩.
+    </div>
+
+    <h3 class="reveal">System Suitability Requirements</h3>
+    <p class="reveal">Before running samples, USP ⟨233⟩ requires demonstration of system suitability:</p>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Requirement</th><th>Criteria</th><th>How to Verify</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Standard Precision</strong></td>
+            <td>RSD ≤ 20% (6 replicates at J level)</td>
+            <td>Run a standard at the specification limit (J) 6 times; calculate RSD</td>
+          </tr>
+          <tr>
+            <td><strong>Calibration Linearity</strong></td>
+            <td>Correlation coefficient ≥ 0.99</td>
+            <td>Plot calibration curve with ≥ 5 standards; verify R ≥ 0.99</td>
+          </tr>
+          <tr>
+            <td><strong>Spike Recovery (Accuracy)</strong></td>
+            <td>70–150% recovery</td>
+            <td>Spike sample at J level; measure recovery (see Chapter 4)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="reveal">Method Validation Parameters</h3>
+    <p class="reveal">
+      When validating an alternative procedure or applying USP ⟨233⟩ to a new matrix, the following validation parameters must be demonstrated:
+    </p>
+    <ul class="reveal">
+      <li><strong>Accuracy:</strong> Spike recovery at 0.5J, J, and 1.5J levels. All must fall within 70–150%.</li>
+      <li><strong>Precision (Repeatability):</strong> RSD of 6 replicate preparations at J level. RSD ≤ 20%.</li>
+      <li><strong>Specificity:</strong> Demonstrate no interference from the sample matrix on target analytes.</li>
+      <li><strong>Limit of Quantitation (LOQ):</strong> Lowest concentration that can be quantified with acceptable precision and accuracy. Must be ≤ 0.5J.</li>
+      <li><strong>Range:</strong> Demonstrated from LOQ to at least 1.5J.</li>
+    </ul>
+
+    <h2 class="reveal">Permitted Daily Exposures (PDEs) — Complete Table</h2>
+    <p class="reveal">Reference table of PDEs from ICH Q3D for all 24 target elements by route of administration:</p>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Element</th><th>Class</th><th>Oral PDE (μg/day)</th><th>Parenteral PDE (μg/day)</th><th>Inhalation PDE (μg/day)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>As</strong></td><td>1</td><td>15</td><td>15</td><td>2</td></tr>
+          <tr><td><strong>Cd</strong></td><td>1</td><td>5</td><td>2</td><td>2</td></tr>
+          <tr><td><strong>Hg</strong></td><td>1</td><td>30</td><td>3</td><td>1</td></tr>
+          <tr><td><strong>Pb</strong></td><td>1</td><td>5</td><td>5</td><td>5</td></tr>
+          <tr><td><strong>Co</strong></td><td>2A</td><td>50</td><td>5</td><td>3</td></tr>
+          <tr><td><strong>Ni</strong></td><td>2A</td><td>200</td><td>20</td><td>5</td></tr>
+          <tr><td><strong>V</strong></td><td>2A</td><td>100</td><td>10</td><td>1</td></tr>
+          <tr><td><strong>Ag</strong></td><td>2B</td><td>150</td><td>10</td><td>7</td></tr>
+          <tr><td><strong>Au</strong></td><td>2B</td><td>100</td><td>100</td><td>1</td></tr>
+          <tr><td><strong>Ir</strong></td><td>2B</td><td>100</td><td>10</td><td>1</td></tr>
+          <tr><td><strong>Os</strong></td><td>2B</td><td>100</td><td>10</td><td>1</td></tr>
+          <tr><td><strong>Pd</strong></td><td>2B</td><td>100</td><td>10</td><td>1</td></tr>
+          <tr><td><strong>Pt</strong></td><td>2B</td><td>100</td><td>10</td><td>1</td></tr>
+          <tr><td><strong>Rh</strong></td><td>2B</td><td>100</td><td>10</td><td>1</td></tr>
+          <tr><td><strong>Ru</strong></td><td>2B</td><td>100</td><td>10</td><td>1</td></tr>
+          <tr><td><strong>Se</strong></td><td>2B</td><td>150</td><td>80</td><td>130</td></tr>
+          <tr><td><strong>Tl</strong></td><td>2B</td><td>8</td><td>8</td><td>8</td></tr>
+          <tr><td><strong>Ba</strong></td><td>3</td><td>1400</td><td>700</td><td>300</td></tr>
+          <tr><td><strong>Cr</strong></td><td>3</td><td>11000</td><td>1100</td><td>3</td></tr>
+          <tr><td><strong>Cu</strong></td><td>3</td><td>3000</td><td>300</td><td>30</td></tr>
+          <tr><td><strong>Li</strong></td><td>3</td><td>550</td><td>250</td><td>25</td></tr>
+          <tr><td><strong>Mo</strong></td><td>3</td><td>3000</td><td>1500</td><td>10</td></tr>
+          <tr><td><strong>Mn</strong></td><td>3</td><td>2500</td><td>250</td><td>25</td></tr>
+          <tr><td><strong>Sb</strong></td><td>3</td><td>1200</td><td>90</td><td>20</td></tr>
+          <tr><td><strong>Sn</strong></td><td>3</td><td>6000</td><td>600</td><td>60</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="reveal">Documentation & Audit Trail</h2>
+    <p class="reveal">
+      Regulatory compliance requires comprehensive documentation. Ensure the following records are maintained:
+    </p>
+    <ul class="reveal">
+      <li><strong>Instrument logbook:</strong> Daily startup, tune files, performance reports, maintenance records.</li>
+      <li><strong>Standard preparation records:</strong> Lot numbers, expiry dates, preparation dates, dilution details.</li>
+      <li><strong>Sample preparation records:</strong> Weights, volumes, digestion programmes, spike details.</li>
+      <li><strong>Calibration data:</strong> Calibration curves, R² values, CCV/CCB results.</li>
+      <li><strong>Results:</strong> Raw data files, ISTD recovery, spike recovery calculations, final reported values.</li>
+      <li><strong>MassHunter audit trail:</strong> The software's built-in audit trail tracks all data modifications — ensure it is enabled and not overridden.</li>
+    </ul>
+
+    <div class="info-box tip reveal">
+      <div class="box-title">💡 Audit Readiness</div>
+      Keep all records organised chronologically and accessible for inspection. During GMP audits, inspectors will verify that:
+      <ol style="margin-top:0.5rem">
+        <li>The instrument was calibrated and performing within specification on the day of analysis.</li>
+        <li>Standards were traceable to certified reference materials.</li>
+        <li>Spike recoveries met 70–150% for every batch.</li>
+        <li>QC checks (CCV/CCB) were within limits throughout the run.</li>
+        <li>Data integrity is maintained — no unauthorised modifications.</li>
+      </ol>
+    </div>
+
+  </div>
+
+  <div class="chapter-nav reveal">
+    <a href="chapter6.html" class="nav-prev">
+      <div class="nav-label">Previous Chapter</div>
+      <div class="nav-title">Maintenance & Troubleshooting</div>
+    </a>
+    <a href="index.html" class="nav-next">
+      <div class="nav-label">Back to</div>
+      <div class="nav-title">All Chapters</div>
+    </a>
+  </div>
+
+  <div class="footer">Agilent 8900 ICP-MS Operation Guide ◈ Chapter 7 ◈ NPRA Malaysia ◈ Syarief Azman</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agilent 8900 ICP-MS — Complete Operation Guide | NPRA Lab Notes</title>
+<meta name="description" content="Comprehensive operation guide for the Agilent 8900 Triple Quadrupole ICP-MS (ICP-QQQ). Startup, tuning, sample prep, maintenance & regulatory compliance.">
+<link rel="icon" type="image/png" href="https://syariefazman.com/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-canvas"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+<div class="grid-overlay"></div>
+
+<div class="main">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="https://syariefazman.com/lab/logam-berat/" class="ctrl-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Logam Berat
+      </a>
+      <a href="https://syariefazman.com/lab/" class="ctrl-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Lab Notes
+      </a>
+    </div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+      <button class="ctrl-btn" onclick="toggleTheme()" id="themeBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="themeTxt">Dark Mode</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-org">🇲🇾 NPRA — Seksyen Pengujian Produk & Kosmetik</div><br>
+    <div class="hero-unit">Unit Analisis Tradisional — Logam Berat</div><br>
+    <div class="hero-instrument">Agilent 8900 Triple Quadrupole ICP-MS</div>
+    <h1>ICP-MS <span class="g">Operation Guide</span></h1>
+    <div class="hero-sub">Complete Reference for the Agilent 8900 ICP-QQQ</div>
+    <p class="hero-desc">
+      A comprehensive, chapter-by-chapter guide covering everything from system fundamentals to daily operation, 
+      sample preparation, method development, maintenance procedures, and regulatory compliance 
+      for the Agilent 8900 Triple Quadrupole ICP-MS used in pharmaceutical heavy metal analysis.
+    </p>
+  </div>
+
+  <!-- Chapter Cards -->
+  <div class="section-label">◈ Guide Chapters</div>
+
+  <div class="cards">
+
+    <a href="chapter1.html" class="chapter-card reveal reveal-d1">
+      <div class="chapter-num">Chapter 01</div>
+      <div class="chapter-icon">🔬</div>
+      <div class="chapter-title">Introduction & System Overview</div>
+      <div class="chapter-desc">ICP-MS fundamentals, triple quadrupole technology, Agilent 8900 key components, and how MS/MS mode works for interference removal.</div>
+      <div class="chapter-tags">
+        <span class="tag t-cyan">ICP-QQQ</span>
+        <span class="tag t-mint">MS/MS</span>
+        <span class="tag t-purple">ORS4</span>
+      </div>
+      <div class="card-footer"><span></span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a href="chapter2.html" class="chapter-card reveal reveal-d2">
+      <div class="chapter-num">Chapter 02</div>
+      <div class="chapter-icon">⚡</div>
+      <div class="chapter-title">Startup & Shutdown Procedures</div>
+      <div class="chapter-desc">Step-by-step power-on, plasma ignition, warm-up, system flush, and proper shutdown sequences to protect the instrument.</div>
+      <div class="chapter-tags">
+        <span class="tag t-cyan">Startup</span>
+        <span class="tag t-amber">Shutdown</span>
+        <span class="tag t-red">Safety</span>
+      </div>
+      <div class="card-footer"><span></span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a href="chapter3.html" class="chapter-card reveal reveal-d3">
+      <div class="chapter-num">Chapter 03</div>
+      <div class="chapter-icon">🖥️</div>
+      <div class="chapter-title">MassHunter Software & Tuning</div>
+      <div class="chapter-desc">MassHunter Workstation navigation, autotune procedures, performance optimization, and cell gas mode configuration.</div>
+      <div class="chapter-tags">
+        <span class="tag t-cyan">MassHunter</span>
+        <span class="tag t-mint">Autotune</span>
+        <span class="tag t-amber">Optimization</span>
+      </div>
+      <div class="card-footer"><span></span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a href="chapter4.html" class="chapter-card reveal reveal-d4">
+      <div class="chapter-num">Chapter 04</div>
+      <div class="chapter-icon">🧪</div>
+      <div class="chapter-title">Sample Preparation & Acid Digestion</div>
+      <div class="chapter-desc">Acid digestion techniques, reagent preparation, glassware decontamination, standard preparation, and spike recovery requirements.</div>
+      <div class="chapter-tags">
+        <span class="tag t-cyan">Digestion</span>
+        <span class="tag t-mint">Standards</span>
+        <span class="tag t-red">HNO₃</span>
+      </div>
+      <div class="card-footer"><span></span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a href="chapter5.html" class="chapter-card reveal reveal-d5">
+      <div class="chapter-num">Chapter 05</div>
+      <div class="chapter-icon">📊</div>
+      <div class="chapter-title">Method Development & Data Acquisition</div>
+      <div class="chapter-desc">Method wizard, element selection, calibration strategy, batch creation, and data analysis using FullQuant and Batch-at-a-Glance.</div>
+      <div class="chapter-tags">
+        <span class="tag t-cyan">Methods</span>
+        <span class="tag t-mint">Calibration</span>
+        <span class="tag t-purple">FullQuant</span>
+      </div>
+      <div class="card-footer"><span></span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a href="chapter6.html" class="chapter-card reveal reveal-d6">
+      <div class="chapter-num">Chapter 06</div>
+      <div class="chapter-icon">🔧</div>
+      <div class="chapter-title">Maintenance & Troubleshooting</div>
+      <div class="chapter-desc">Daily, weekly, and monthly maintenance schedules. Torch, nebulizer, cone cleaning, pump tubing, and common issue resolution.</div>
+      <div class="chapter-tags">
+        <span class="tag t-amber">Daily</span>
+        <span class="tag t-purple">Weekly</span>
+        <span class="tag t-red">Monthly</span>
+      </div>
+      <div class="card-footer"><span></span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a href="chapter7.html" class="chapter-card reveal reveal-d7">
+      <div class="chapter-num">Chapter 07</div>
+      <div class="chapter-icon">📋</div>
+      <div class="chapter-title">Regulatory Compliance — USP & ICH Q3D</div>
+      <div class="chapter-desc">USP ⟨232⟩/⟨233⟩ elemental impurity limits and procedures, ICH Q3D risk assessment, target elements, and validation requirements.</div>
+      <div class="chapter-tags">
+        <span class="tag t-cyan">USP ⟨232⟩</span>
+        <span class="tag t-mint">USP ⟨233⟩</span>
+        <span class="tag t-amber">ICH Q3D</span>
+      </div>
+      <div class="card-footer"><span></span><span class="card-arrow">→</span></div>
+    </a>
+
+  </div>
+
+  <!-- Author -->
+  <div class="section-label">◈ Prepared By</div>
+  <div class="author reveal">
+    <img src="https://github.com/syarief02.png" alt="Syarief Azman" class="author-img" loading="lazy">
+    <div class="author-info">
+      <div class="author-name">Syarief Azman</div>
+      <div class="author-role">Penolong Pegawai Farmasi — Seksyen Pengujian Produk & Kosmetik, PKKK, NPRA</div>
+    </div>
+    <div class="author-links">
+      <a href="https://syariefazman.com" class="author-link">Portfolio</a>
+      <a href="https://github.com/syarief02" class="author-link" target="_blank">GitHub</a>
+    </div>
+  </div>
+
+  <div class="footer">Agilent 8900 ICP-MS Operation Guide ◈ Unit Analisis Tradisional — Logam Berat ◈ NPRA Malaysia ◈ Syarief Azman</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

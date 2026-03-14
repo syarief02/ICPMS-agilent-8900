@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 5: Method Development & Data Acquisition — Agilent 8900 ICP-MS Guide</title>
+<meta name="description" content="Method wizard, element selection, calibration strategy, batch creation, and data analysis for the Agilent 8900 ICP-QQQ.">
+<link rel="icon" type="image/png" href="https://syariefazman.com/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-canvas"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+<div class="grid-overlay"></div>
+
+<div class="main">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="ctrl-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All Chapters
+      </a>
+    </div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+      <button class="ctrl-btn" onclick="toggleTheme()" id="themeBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="themeTxt">Dark Mode</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-org">🇲🇾 NPRA — Agilent 8900 ICP-MS Guide</div><br>
+    <div class="hero-instrument">Chapter 05</div>
+    <h1>Method Development & <span class="g">Data Acquisition</span></h1>
+    <div class="hero-sub">From Method Setup to Quantitative Results</div>
+  </div>
+
+  <div class="content">
+
+    <h2 class="reveal">Method Development Workflow</h2>
+    <p class="reveal">
+      Creating an acquisition method in MassHunter involves defining which elements to measure, in which cell gas mode, and with what acquisition parameters. The Agilent 8900's <strong>Method Wizard</strong> simplifies this process significantly.
+    </p>
+
+    <div class="diagram reveal">
+      <div class="flow">
+        <div class="flow-node">Select Elements</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node cell">Assign Gas Modes</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node quad">Set Parameters</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Build Sequence</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node detector">Acquire Data</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node plasma">Analyse Results</div>
+      </div>
+    </div>
+
+    <h2 class="reveal">Step 1 — Element Selection</h2>
+    <p class="reveal">
+      Navigate to the <strong>Acquisition</strong> tab in MassHunter. Select the elements you wish to analyse. For pharmaceutical heavy metal testing per USP ⟨232⟩/⟨233⟩, the minimum required elements are:
+    </p>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Element</th><th>Symbol</th><th>Mass (m/z)</th><th>Recommended Mode</th><th>Note</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Arsenic</strong></td><td>As</td><td>75 → 91</td><td>O₂ MS/MS (mass-shift)</td><td>Measured as AsO⁺ to avoid ⁴⁰Ar³⁵Cl⁺</td></tr>
+          <tr><td><strong>Cadmium</strong></td><td>Cd</td><td>111, 114</td><td>He mode or No Gas</td><td>Low interference at these masses</td></tr>
+          <tr><td><strong>Lead</strong></td><td>Pb</td><td>208</td><td>No Gas</td><td>Interference-free at high mass</td></tr>
+          <tr><td><strong>Mercury</strong></td><td>Hg</td><td>202</td><td>No Gas or He</td><td>Memory effect — requires extended rinse</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box note reveal">
+      <div class="box-title">📌 Additional Elements (ICH Q3D)</div>
+      If full ICH Q3D compliance is required, additional elements may be added: V, Co, Ni, Cu, Mo, Ru, Rh, Pd, Ag, Pt, Os, Ir, Se, Tl, Sb, Sn, Ba, Li, Cr, Mn. The Agilent 8900 can analyse all of these in a single multi-tune acquisition.
+    </div>
+
+    <h2 class="reveal">Step 2 — Cell Gas Mode Assignment</h2>
+    <p class="reveal">
+      Assign the appropriate cell gas mode for each analyte. MassHunter's <strong>IntelliQuant Assistant</strong> can recommend optimal modes based on a preliminary scan, or you can manually assign modes based on known interferences.
+    </p>
+
+    <h3 class="reveal">Multi-Tune Acquisition</h3>
+    <p class="reveal">
+      The Agilent 8900 supports <strong>multi-tune acquisition</strong> — the instrument can automatically switch between different cell gas modes during a single sample analysis. For example, within one acquisition:
+    </p>
+    <ul class="reveal">
+      <li><strong>Tune 1 (No Gas):</strong> Pb, Hg, Bi (ISTD)</li>
+      <li><strong>Tune 2 (He Mode):</strong> Cd, Rh (ISTD)</li>
+      <li><strong>Tune 3 (O₂ MS/MS):</strong> As (→ AsO), Se (→ SeO), Ge (ISTD)</li>
+    </ul>
+    <p class="reveal">
+      Cell gas switching is fast and automatic — there is no need to run separate methods for different modes.
+    </p>
+
+    <h2 class="reveal">Step 3 — Acquisition Parameters</h2>
+    <p class="reveal">Set the following key acquisition parameters for each element:</p>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Parameter</th><th>Typical Value</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Integration Time</strong></td><td>0.1 – 3.0 s per mass point</td><td>Longer = better precision, shorter = faster throughput</td></tr>
+          <tr><td><strong>Replicates</strong></td><td>3 (standard)</td><td>Multiple measurements per sample for RSD calculation</td></tr>
+          <tr><td><strong>Sweeps per Replicate</strong></td><td>100 (default)</td><td>Number of full mass scans averaged per replicate</td></tr>
+          <tr><td><strong>Uptake / Stabilisation Time</strong></td><td>30–60 s</td><td>Time to aspirate sample before data collection begins</td></tr>
+          <tr><td><strong>Rinse Time</strong></td><td>30–90 s</td><td>Time spent rinsing between samples (critical for Hg)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box warn reveal">
+      <div class="box-title">⚠️ Mercury Memory Effect</div>
+      Mercury has a strong memory effect in ICP-MS — it adsorbs to tubing, spray chamber, and torch surfaces. Use extended rinse times (<strong>60–120 seconds</strong>) between Hg-containing samples. Consider adding <strong>gold (Au) at 100–200 ppb</strong> to rinse solutions to help flush Hg.
+    </div>
+
+    <h2 class="reveal">Step 4 — Calibration Strategy</h2>
+
+    <h3 class="reveal">External Calibration with Internal Standard Correction</h3>
+    <p class="reveal">
+      The standard approach for pharmaceutical ICP-MS analysis:
+    </p>
+    <ol class="step-list reveal">
+      <li><strong>Calibration standards:</strong> Prepare 5+ standards covering 0 – 10 ppb (or appropriate range) in the sample matrix (2% HNO₃). See Chapter 4 for details.</li>
+      <li><strong>Internal standard:</strong> Added online to all blanks, standards, and samples at constant concentration. ISTD signal is used to normalise analyte signals.</li>
+      <li><strong>Calibration curve:</strong> MassHunter plots ISTD-corrected signal vs. concentration. Linear regression (R² ≥ 0.999 preferred, ≥ 0.995 minimum).</li>
+      <li><strong>Verification:</strong> Run an independent CCV standard. Must recover within ±10%.</li>
+    </ol>
+
+    <h2 class="reveal">Step 5 — Batch / Sequence Setup</h2>
+    <p class="reveal">
+      Navigate to the <strong>Sequence</strong> tab to create the sample run list. A typical analysis sequence follows this order:
+    </p>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Position</th><th>Sample Type</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td><strong>Calibration Blank</strong></td><td>Establish zero baseline</td></tr>
+          <tr><td>2–6</td><td><strong>Calibration Standards</strong></td><td>Build calibration curve (ascending concentration)</td></tr>
+          <tr><td>7</td><td><strong>CCV (mid-level std)</strong></td><td>Verify calibration immediately after standards</td></tr>
+          <tr><td>8</td><td><strong>CCB (blank)</strong></td><td>Check for carryover</td></tr>
+          <tr><td>9–18</td><td><strong>Samples</strong></td><td>Unknown samples, spiked samples, duplicates</td></tr>
+          <tr><td>19</td><td><strong>CCV</strong></td><td>Mid-batch verification (every 10 samples)</td></tr>
+          <tr><td>20</td><td><strong>CCB</strong></td><td>Mid-batch blank check</td></tr>
+          <tr><td>21–30</td><td><strong>Samples</strong></td><td>Continue with remaining samples</td></tr>
+          <tr><td>31</td><td><strong>CCV</strong></td><td>End-of-batch verification</td></tr>
+          <tr><td>32</td><td><strong>CCB</strong></td><td>Final carryover check</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box tip reveal">
+      <div class="box-title">💡 Sequence Tips</div>
+      <ul>
+        <li>Insert a <strong>CCV/CCB pair every 10 samples</strong> to monitor calibration stability.</li>
+        <li>Place <strong>spiked samples</strong> alongside their unspiked counterparts for direct comparison.</li>
+        <li>Use <strong>duplicate preparations</strong> to verify precision.</li>
+        <li>Avoid using asterisks (*) in sample names — MassHunter may interpret them as wildcards.</li>
+        <li>Assign autosampler rack positions carefully — double-check before starting the run.</li>
+      </ul>
+    </div>
+
+    <h2 class="reveal">Step 6 — Data Analysis</h2>
+
+    <h3 class="reveal">FullQuant Analysis</h3>
+    <p class="reveal">
+      After acquisition, navigate to <strong>Data Analysis</strong>. MassHunter's <strong>FullQuant</strong> module automatically calculates sample concentrations from the calibration curve, applies internal standard corrections, and generates results tables.
+    </p>
+
+    <h3 class="reveal">Batch-at-a-Glance</h3>
+    <p class="reveal">
+      The <strong>Batch-at-a-Glance</strong> interactive data table provides a real-time overview of:
+    </p>
+    <ul class="reveal">
+      <li>Sample concentrations (with pass/fail flagging against user-defined limits)</li>
+      <li>Internal standard signal trends across the batch</li>
+      <li>Calibration curve fit and individual point residuals</li>
+      <li>Outlier flagging (built-in statistical checks)</li>
+      <li>QC checks (CCV recovery, CCB levels)</li>
+    </ul>
+
+    <h3 class="reveal">Interpreting Results</h3>
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Check</th><th>Acceptance Criteria</th><th>Action if Fail</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Calibration R²</strong></td><td>≥ 0.995 (ideally ≥ 0.999)</td><td>Re-prepare standards, check for contamination</td></tr>
+          <tr><td><strong>CCV Recovery</strong></td><td>90–110%</td><td>Recalibrate if drift detected</td></tr>
+          <tr><td><strong>CCB Level</strong></td><td>≤ LOQ</td><td>Investigate contamination, re-rinse</td></tr>
+          <tr><td><strong>ISTD Stability</strong></td><td>70–130% of initial (in batch)</td><td>Investigate matrix suppression or drift</td></tr>
+          <tr><td><strong>Sample RSD</strong></td><td>≤ 5% (3 replicates)</td><td>Re-run sample, check nebulizer</td></tr>
+          <tr><td><strong>Spike Recovery</strong></td><td>70–150% (per USP ⟨233⟩)</td><td>Investigate matrix, re-prepare if needed</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="reveal">Reporting</h3>
+    <p class="reveal">
+      MassHunter can generate automated reports in customisable formats. Ensure reports include:
+    </p>
+    <ul class="reveal">
+      <li>Calibration curve parameters (slope, intercept, R²)</li>
+      <li>Sample results (concentration, RSD, ISTD recovery)</li>
+      <li>QC summary (CCV, CCB, spike recovery)</li>
+      <li>Instrument tune/performance data</li>
+      <li>Method parameters (elements, modes, integration times)</li>
+    </ul>
+
+  </div>
+
+  <div class="chapter-nav reveal">
+    <a href="chapter4.html" class="nav-prev">
+      <div class="nav-label">Previous Chapter</div>
+      <div class="nav-title">Sample Preparation & Acid Digestion</div>
+    </a>
+    <a href="chapter6.html" class="nav-next">
+      <div class="nav-label">Next Chapter</div>
+      <div class="nav-title">Maintenance & Troubleshooting</div>
+    </a>
+  </div>
+
+  <div class="footer">Agilent 8900 ICP-MS Operation Guide ◈ Chapter 5 ◈ NPRA Malaysia ◈ Syarief Azman</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

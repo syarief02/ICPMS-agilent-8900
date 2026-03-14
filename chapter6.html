@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 6: Maintenance & Troubleshooting — Agilent 8900 ICP-MS Guide</title>
+<meta name="description" content="Daily, weekly, monthly maintenance schedules and troubleshooting guide for the Agilent 8900 ICP-QQQ system.">
+<link rel="icon" type="image/png" href="https://syariefazman.com/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-canvas"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+<div class="grid-overlay"></div>
+
+<div class="main">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="ctrl-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All Chapters
+      </a>
+    </div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+      <button class="ctrl-btn" onclick="toggleTheme()" id="themeBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="themeTxt">Dark Mode</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-org">🇲🇾 NPRA — Agilent 8900 ICP-MS Guide</div><br>
+    <div class="hero-instrument">Chapter 06</div>
+    <h1>Maintenance & <span class="g">Troubleshooting</span></h1>
+    <div class="hero-sub">Keep the Instrument in Peak Condition</div>
+  </div>
+
+  <div class="content">
+
+    <h2 class="reveal">Maintenance Schedule Overview</h2>
+    <p class="reveal">
+      Consistent preventive maintenance is essential for reliable ICP-MS performance and extended component lifespan. The following schedule outlines the recommended maintenance tasks based on Agilent guidelines.
+    </p>
+
+    <!-- ═══ DAILY ═══ -->
+    <h2 class="reveal">Daily Maintenance</h2>
+    <p class="reveal">Perform these checks every day before starting analysis:</p>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Task</th><th>What to Check</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Argon Gas</strong></td>
+            <td>Cylinder pressure & regulator</td>
+            <td>Ensure adequate pressure (&gt; 100 psi). Replace cylinder if low.</td>
+          </tr>
+          <tr>
+            <td><strong>Drain Vessel</strong></td>
+            <td>Waste level</td>
+            <td>Empty if &gt; half full. Must be emptied before plasma ignition. Dispose of contents per hazardous waste protocol.</td>
+          </tr>
+          <tr>
+            <td><strong>Sample Uptake Tubing</strong></td>
+            <td>Damage, flat spots, elasticity</td>
+            <td>Replace if deteriorated. Ensure it is properly seated in the pump.</td>
+          </tr>
+          <tr>
+            <td><strong>Exhaust System</strong></td>
+            <td>Extraction airflow</td>
+            <td>Confirm positive extraction at the exhaust duct.</td>
+          </tr>
+          <tr>
+            <td><strong>Instrument Covers</strong></td>
+            <td>All panels secure</td>
+            <td>Close all panels. Safety interlocks prevent plasma if open.</td>
+          </tr>
+          <tr>
+            <td><strong>Performance Report</strong></td>
+            <td>Instrument passes specs</td>
+            <td>Run autotune + performance check after warm-up.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ═══ WEEKLY ═══ -->
+    <h2 class="reveal">Weekly Maintenance</h2>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Task</th><th>What to Check</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Sampling Cone</strong></td>
+            <td>Orifice clarity & shape</td>
+            <td>Inspect orifice with magnifier. Should be circular, ~1 mm diameter, free of deposits. Clean if needed.</td>
+          </tr>
+          <tr>
+            <td><strong>Skimmer Cone</strong></td>
+            <td>Orifice clarity & shape</td>
+            <td>Same as sampling cone. Look for enlargement or asymmetry — replace if damaged.</td>
+          </tr>
+          <tr>
+            <td><strong>Peristaltic Pump Tubing</strong></td>
+            <td>Elasticity, flat spots</td>
+            <td>Replace tubing every 1–2 weeks under normal use. Release pressure when not in use.</td>
+          </tr>
+          <tr>
+            <td><strong>Spray Chamber</strong></td>
+            <td>Cleanliness, drain flow</td>
+            <td>Check for salt build-up or discolouration inside the spray chamber.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ═══ MONTHLY ═══ -->
+    <h2 class="reveal">Monthly Maintenance</h2>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Task</th><th>What to Check</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Foreline Pump Oil</strong></td>
+            <td>Oil level and colour</td>
+            <td>Check through the sight glass. Oil should be clear/amber. Dark or cloudy = replace. Change every 6 months minimum.</td>
+          </tr>
+          <tr>
+            <td><strong>Foreline Pump Exhaust</strong></td>
+            <td>Exhaust hose condition</td>
+            <td>Check for damage, clogging, or disconnection.</td>
+          </tr>
+          <tr>
+            <td><strong>Nebulizer Performance</strong></td>
+            <td>Spray pattern</td>
+            <td>Run nebulizer test. Check for even, symmetrical spray pattern.</td>
+          </tr>
+          <tr>
+            <td><strong>Torch Assembly</strong></td>
+            <td>Torch, bonnet, shield plate, RF coil</td>
+            <td>Inspect for deposits, cracks, deformation. Clean or replace as needed.</td>
+          </tr>
+          <tr>
+            <td><strong>Gas Tubing</strong></td>
+            <td>Plasma & auxiliary gas lines</td>
+            <td>Check for cracks, kinks, or loose connections. Replace if worn.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ═══ CONE CLEANING ═══ -->
+    <h2 class="reveal">Interface Cone Cleaning Procedure</h2>
+    <p class="reveal">
+      Clean cones are critical for optimal sensitivity and stability. The cleaning intensity should match the level of contamination.
+    </p>
+
+    <h3 class="reveal">Level 1 — Routine Cleaning (Weekly)</h3>
+    <ol class="step-list reveal">
+      <li>Remove the sampler and skimmer cones from the instrument.</li>
+      <li>Use a <strong>cotton swab moistened with ultrapure water</strong> to gently clean the back side and around the orifice of each cone.</li>
+      <li>Place cones in a beaker of <strong>ultrapure water</strong> and sonicate for <strong>20 minutes</strong>.</li>
+      <li>Repeat sonication until the water remains clear.</li>
+      <li>Rinse cones with ultrapure water and allow to <strong>air dry</strong> on a clean lint-free tissue.</li>
+    </ol>
+
+    <h3 class="reveal">Level 2 — Moderate Contamination</h3>
+    <ol class="step-list reveal">
+      <li>After Level 1 cleaning, prepare a <strong>2% Citranox solution</strong>.</li>
+      <li>Sonicate cones in the Citranox solution for <strong>2–3 minutes only</strong>.</li>
+      <li>Remove cones and rinse thoroughly with ultrapure water.</li>
+      <li>Sonicate in ultrapure water for <strong>5 minutes</strong> to remove detergent residue.</li>
+      <li>Rinse and air dry.</li>
+    </ol>
+
+    <h3 class="reveal">Level 3 — Heavy Contamination</h3>
+    <ol class="step-list reveal">
+      <li>After Level 1 cleaning, use a <strong>cotton swab with 2% HNO₃</strong> to clean both sides of the cone.</li>
+      <li>Rinse thoroughly with ultrapure water.</li>
+      <li>Sonicate in ultrapure water for <strong>5 minutes</strong> to remove all acid residue.</li>
+      <li>Rinse and air dry.</li>
+    </ol>
+
+    <div class="info-box danger reveal">
+      <div class="box-title">🚫 Never Do This</div>
+      <ul>
+        <li>Never use <strong>abrasive materials</strong> (wire brushes, metal tools) to clean cones — this damages the orifice.</li>
+        <li>Never sonicate in concentrated acid — this is too aggressive and can damage the cone surface.</li>
+        <li>Always check the <strong>graphite gasket</strong> behind the sampler cone before reinstalling. Replace it if deformed, torn, or compressed.</li>
+      </ul>
+    </div>
+
+    <h3 class="reveal">Cone Conditioning After Cleaning</h3>
+    <p class="reveal">
+      After cleaning and reinstalling cones, they must be <strong>conditioned</strong> before analysis:
+    </p>
+    <ol class="step-list reveal">
+      <li>Ignite the plasma and aspirate <strong>50 ppm Ca in 1% HNO₃</strong> for <strong>10 minutes</strong>.</li>
+      <li>Switch to <strong>1% HNO₃</strong> rinse for <strong>5 minutes</strong>.</li>
+      <li>Run autotune and performance report to verify instrument is back to specification.</li>
+    </ol>
+
+    <!-- ═══ TORCH CLEANING ═══ -->
+    <h2 class="reveal">Torch Cleaning</h2>
+    <ol class="step-list reveal">
+      <li>Remove the torch assembly from the instrument.</li>
+      <li>Soak in <strong>5% HNO₃</strong> for at least <strong>30 minutes</strong> to dissolve deposits.</li>
+      <li>For stubborn deposits, soak in <strong>50% aqua regia</strong> (3:1 HCl:HNO₃) briefly (15–30 minutes).</li>
+      <li>Rinse thoroughly with ultrapure deionised water.</li>
+      <li>Dry completely with clean nitrogen/argon gas or in a drying oven overnight.</li>
+      <li>Reinstall and re-optimise plasma sampling depth.</li>
+    </ol>
+
+    <div class="info-box danger reveal">
+      <div class="box-title">🚫 Torch Safety</div>
+      <ul>
+        <li><strong>Never sonicate the torch</strong> — ultrasonic vibration causes permanent microfractures in quartz.</li>
+        <li><strong>Never ignite plasma with a wet torch</strong> — moisture causes irreversible thermal damage.</li>
+        <li>Always ensure the torch is <strong>completely dry</strong> before reinstalling.</li>
+      </ul>
+    </div>
+
+    <!-- ═══ NEBULIZER ═══ -->
+    <h2 class="reveal">Nebulizer Maintenance</h2>
+    <p class="reveal">
+      A blocked or partially clogged nebulizer directly impacts sensitivity, precision, and stability.
+    </p>
+
+    <h3 class="reveal">Preventing Blockage</h3>
+    <ul class="reveal">
+      <li>Always <strong>filter samples</strong> through 0.45 μm syringe filters before analysis.</li>
+      <li>Never aspirate <strong>undissolved particles, precipitates, or high TDS solutions</strong> without dilution.</li>
+      <li>Rinse the nebulizer with clean water after each analytical session.</li>
+    </ul>
+
+    <h3 class="reveal">Cleaning a Blocked Nebulizer</h3>
+    <ol class="step-list reveal">
+      <li><strong>Reverse flush:</strong> Use the peristaltic pump in reverse to push solvent back through the nebulizer from the tip end.</li>
+      <li><strong>Solvent soak:</strong> Soak the tip in a suitable solvent (methanol for organic residues, dilute acid for salt deposits).</li>
+      <li><strong>Overnight soak:</strong> For stubborn deposits, soak overnight in <strong>25% detergent solution</strong>, then rinse with DI water.</li>
+      <li><strong>Last resort:</strong> For severe salt build-up, soak overnight in <strong>concentrated HNO₃</strong> — ensure no air bubbles are trapped inside the capillary.</li>
+    </ol>
+
+    <div class="info-box warn reveal">
+      <div class="box-title">⚠️ Nebulizer Precautions</div>
+      <ul>
+        <li>Never use a <strong>wire or pin</strong> to clear the nebulizer tip — this destroys the precision-machined orifice.</li>
+        <li>Never <strong>sonicate</strong> a glass concentric nebulizer.</li>
+        <li>Handle with extreme care — PFA and glass nebulizers are fragile.</li>
+      </ul>
+    </div>
+
+    <!-- ═══ TROUBLESHOOTING ═══ -->
+    <h2 class="reveal">Troubleshooting Common Issues</h2>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Symptom</th><th>Possible Cause</th><th>Solution</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Low sensitivity (all masses)</strong></td>
+            <td>Dirty cones, worn tubing, spray chamber issue, misaligned torch</td>
+            <td>Clean cones, replace tubing, check spray chamber, re-optimise torch position</td>
+          </tr>
+          <tr>
+            <td><strong>Low sensitivity (low masses only)</strong></td>
+            <td>Nebulizer gas flow too high, torch position wrong</td>
+            <td>Re-tune nebulizer gas, adjust sampling depth</td>
+          </tr>
+          <tr>
+            <td><strong>Low sensitivity (high masses only)</strong></td>
+            <td>Ion lens degradation, extraction lens voltage drift</td>
+            <td>Run autotune, check lens voltages</td>
+          </tr>
+          <tr>
+            <td><strong>High oxide ratio (CeO/Ce)</strong></td>
+            <td>Sampling depth too shallow, nebulizer gas too low, wet plasma</td>
+            <td>Increase sampling depth, increase nebulizer gas, check for spray chamber leaks</td>
+          </tr>
+          <tr>
+            <td><strong>Poor precision (high RSD)</strong></td>
+            <td>Worn pump tubing, nebulizer blockage, unstable plasma</td>
+            <td>Replace tubing, clean/check nebulizer, check argon flow</td>
+          </tr>
+          <tr>
+            <td><strong>High background</strong></td>
+            <td>Contaminated cones, dirty spray chamber, rinse solution contaminated</td>
+            <td>Clean cones/spray chamber, prepare fresh rinse solution</td>
+          </tr>
+          <tr>
+            <td><strong>Plasma won't ignite</strong></td>
+            <td>Low argon pressure, torch damaged, interlock open, wet torch</td>
+            <td>Check gas, inspect torch, close all panels, dry torch completely</td>
+          </tr>
+          <tr>
+            <td><strong>Plasma unstable / flickering</strong></td>
+            <td>Argon flow issue, drain tube blockage, sample too concentrated</td>
+            <td>Check gas regulator, clear drain tube, dilute sample</td>
+          </tr>
+          <tr>
+            <td><strong>ISTD drop across batch</strong></td>
+            <td>Matrix suppression, cone clogging, drift</td>
+            <td>Dilute samples, clean cones, re-calibrate mid-batch</td>
+          </tr>
+          <tr>
+            <td><strong>Mercury carryover</strong></td>
+            <td>Hg memory effect in tubing/spray chamber</td>
+            <td>Extend rinse time, add Au to rinse, replace uptake tubing</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box tip reveal">
+      <div class="box-title">💡 Troubleshooting Logic</div>
+      When diagnosing issues, work systematically from the <strong>sample introduction end</strong> toward the <strong>detector</strong>:
+      <ol style="margin-top:0.5rem">
+        <li>Check pump tubing → nebulizer → spray chamber → torch</li>
+        <li>Check cones → ion lens → vacuum</li>
+        <li>Check tune parameters → cell gas flows</li>
+        <li>Run performance report to identify the specific degraded parameter</li>
+      </ol>
+    </div>
+
+  </div>
+
+  <div class="chapter-nav reveal">
+    <a href="chapter5.html" class="nav-prev">
+      <div class="nav-label">Previous Chapter</div>
+      <div class="nav-title">Method Development & Data Acquisition</div>
+    </a>
+    <a href="chapter7.html" class="nav-next">
+      <div class="nav-label">Next Chapter</div>
+      <div class="nav-title">Regulatory Compliance — USP & ICH Q3D</div>
+    </a>
+  </div>
+
+  <div class="footer">Agilent 8900 ICP-MS Operation Guide ◈ Chapter 6 ◈ NPRA Malaysia ◈ Syarief Azman</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

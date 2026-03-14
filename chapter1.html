@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 1: Introduction & System Overview — Agilent 8900 ICP-MS Guide</title>
+<meta name="description" content="ICP-MS fundamentals, triple quadrupole technology, Agilent 8900 key components, and MS/MS mode operation for pharmaceutical heavy metal analysis.">
+<link rel="icon" type="image/png" href="https://syariefazman.com/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-canvas"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+<div class="grid-overlay"></div>
+
+<div class="main">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="ctrl-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All Chapters
+      </a>
+    </div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+      <button class="ctrl-btn" onclick="toggleTheme()" id="themeBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="themeTxt">Dark Mode</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-org">🇲🇾 NPRA — Agilent 8900 ICP-MS Guide</div><br>
+    <div class="hero-instrument">Chapter 01</div>
+    <h1>Introduction & <span class="g">System Overview</span></h1>
+    <div class="hero-sub">Understanding ICP-MS & Triple Quadrupole Technology</div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <h2 class="reveal">What is ICP-MS?</h2>
+    <p class="reveal">
+      <strong>Inductively Coupled Plasma Mass Spectrometry (ICP-MS)</strong> is an analytical technique used to detect and quantify trace elements in a wide range of sample types. It combines a high-temperature <strong>inductively coupled plasma</strong> (ICP) source — which ionises the sample — with a <strong>mass spectrometer</strong> (MS) — which separates and detects the ions based on their mass-to-charge ratio (m/z).
+    </p>
+    <p class="reveal">
+      ICP-MS is considered the <strong>gold standard</strong> for elemental analysis due to its exceptional sensitivity, capable of detecting elements at concentrations as low as <strong>parts per trillion (ppt)</strong>. It is widely used in pharmaceutical, environmental, food safety, geochemical, and clinical applications.
+    </p>
+
+    <div class="spec-grid reveal">
+      <div class="spec-card">
+        <div class="spec-value">ppt <span class="unit">level</span></div>
+        <div class="spec-label">Detection Limits</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-value">75+ <span class="unit">elements</span></div>
+        <div class="spec-label">Multi-Element Coverage</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-value">10⁹ <span class="unit">range</span></div>
+        <div class="spec-label">Dynamic Range</div>
+      </div>
+    </div>
+
+    <h2 class="reveal">What is Triple Quadrupole ICP-MS (ICP-QQQ)?</h2>
+    <p class="reveal">
+      The <strong>Agilent 8900 ICP-QQQ</strong> is a <strong>Triple Quadrupole ICP-MS</strong>, meaning it uses two quadrupole mass filters (Q1 and Q2) with a collision/reaction cell (CRC) in between. This configuration enables <strong>MS/MS (tandem mass spectrometry)</strong> operation.
+    </p>
+    <p class="reveal">
+      In a conventional single-quadrupole ICP-MS, the single mass filter cannot distinguish between an analyte ion and a polyatomic interference of the same mass. The triple quad configuration solves this by using <strong>Q1 as a mass filter before the cell</strong>, ensuring only ions of a specific mass enter the reaction cell. This produces <strong>predictable, controlled, and consistent</strong> reaction chemistry — regardless of sample matrix complexity.
+    </p>
+
+    <div class="info-box tip reveal">
+      <div class="box-title">💡 Key Advantage</div>
+      MS/MS mode provides consistent interference removal across all sample types. Unlike single-quad He mode, the reaction chemistry in MS/MS is matrix-independent because Q1 pre-selects only the target mass before it enters the cell.
+    </div>
+
+    <h2 class="reveal">Agilent 8900 — Key Components</h2>
+    <p class="reveal">The Agilent 8900 ICP-QQQ system consists of several major components working together in sequence:</p>
+
+    <div class="diagram reveal">
+      <div class="flow">
+        <div class="flow-node">Sample Introduction<br><small>Nebulizer + Spray Chamber</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node plasma">ICP Torch<br><small>Plasma 6000–10000 K</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Interface Cones<br><small>Sampler + Skimmer</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Ion Lens<br><small>Ion Focusing</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node quad">Q1<br><small>Mass Filter 1</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node cell">ORS4 Cell<br><small>He / O₂ / NH₃ / H₂</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node quad">Q2<br><small>Mass Filter 2</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node detector">Detector<br><small>Electron Multiplier</small></div>
+      </div>
+    </div>
+
+    <h3 class="reveal">1. Sample Introduction System</h3>
+    <p class="reveal">
+      The liquid sample is converted into a fine aerosol by a <strong>PFA nebulizer</strong> and carried by argon gas into a <strong>quartz spray chamber</strong>. Only the finest droplets pass through to the plasma torch — larger droplets are drained away. The <strong>peristaltic pump</strong> controls sample uptake and drain flow rates.
+    </p>
+
+    <h3 class="reveal">2. ICP Torch & Plasma</h3>
+    <p class="reveal">
+      The torch assembly consists of three concentric quartz tubes. Argon gas flows through the tubes and is ignited by a <strong>radio-frequency (RF) coil</strong> at 27.12 MHz to generate an extremely hot plasma at approximately <strong>6000–10,000 K</strong>. At these temperatures, sample aerosol is completely desolvated, vaporised, atomised, and ionised.
+    </p>
+
+    <h3 class="reveal">3. Interface Region</h3>
+    <p class="reveal">
+      The <strong>sampling cone</strong> and <strong>skimmer cone</strong> are nickel or platinum-tipped cones that extract ions from the atmospheric-pressure plasma into the high-vacuum mass spectrometer region. The sampler cone has a ~1 mm orifice. Proper maintenance of these cones is critical for sensitivity and stability.
+    </p>
+
+    <h3 class="reveal">4. Ion Optics / Ion Lens</h3>
+    <p class="reveal">
+      After passing through the cones, the ion beam enters the ion lens system, which focuses and guides the analyte ions while removing photons and neutral species. The Agilent 8900 uses an <strong>off-axis ion lens</strong> design to prevent photons from reaching the detector, reducing background noise.
+    </p>
+
+    <h3 class="reveal">5. Q1 — First Quadrupole Mass Filter</h3>
+    <p class="reveal">
+      In <strong>MS/MS mode</strong>, Q1 acts as a <strong>unit-mass filter</strong>, allowing only ions of a specific m/z to pass through to the collision/reaction cell. This is the critical difference from single-quad ICP-MS — it ensures that <strong>only the target analyte mass</strong> (and any on-mass interferences) enter the cell.
+    </p>
+
+    <h3 class="reveal">6. ORS4 Collision/Reaction Cell</h3>
+    <p class="reveal">
+      The <strong>Fourth-Generation Octopole Reaction System (ORS4)</strong> is the heart of the interference removal capability. It can be filled with different gases:
+    </p>
+    <ul class="reveal">
+      <li><strong>Helium (He) — Collision Mode:</strong> Polyatomic interferences are removed by kinetic energy discrimination (KED). Larger polyatomic ions undergo more collisions and lose more energy than smaller analyte ions.</li>
+      <li><strong>Hydrogen (H₂) — Reaction Mode:</strong> Selective reaction for specific interferences (e.g., removing ⁴⁰Ar⁺ from ⁴⁰Ca⁺).</li>
+      <li><strong>Oxygen (O₂) — Reaction Mode:</strong> Analyte ions react with O₂ to form oxide product ions, shifting them to interference-free masses (e.g., As⁷⁵ → AsO⁹¹).</li>
+      <li><strong>Ammonia (NH₃) — Reaction Mode:</strong> Highly reactive gas for complex interference removal, particularly effective for transition metals and semiconductor elements.</li>
+    </ul>
+
+    <h3 class="reveal">7. Q2 — Second Quadrupole Mass Filter</h3>
+    <p class="reveal">
+      Q2 acts as the <strong>final mass filter</strong>, selecting either the original analyte mass (on-mass measurement) or the product ion mass (mass-shift measurement) to pass to the detector. Any remaining interferences or cell-formed species are rejected.
+    </p>
+
+    <h3 class="reveal">8. Detector</h3>
+    <p class="reveal">
+      The <strong>electron multiplier detector</strong> converts incoming ions into electrical signals. It operates in both <strong>pulse counting mode</strong> (for low concentrations) and <strong>analog mode</strong> (for high concentrations), providing a dynamic range spanning over nine orders of magnitude.
+    </p>
+
+    <h2 class="reveal">MS/MS Mode vs Single-Quad Mode</h2>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Single-Quad (SQ)</th>
+            <th>MS/MS (QQQ)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Q1 Function</strong></td>
+            <td>Ion guide only (all masses pass)</td>
+            <td>Unit-mass filter (selects target mass)</td>
+          </tr>
+          <tr>
+            <td><strong>Cell Chemistry</strong></td>
+            <td>Unpredictable — all masses enter cell</td>
+            <td>Controlled — only target mass enters</td>
+          </tr>
+          <tr>
+            <td><strong>Matrix Effects</strong></td>
+            <td>Matrix-dependent interference removal</td>
+            <td>Matrix-independent, consistent results</td>
+          </tr>
+          <tr>
+            <td><strong>Interference Removal</strong></td>
+            <td>He KED mode mainly</td>
+            <td>He KED + reactive gases (O₂, NH₃, H₂)</td>
+          </tr>
+          <tr>
+            <td><strong>Best For</strong></td>
+            <td>Routine environmental/food samples</td>
+            <td>Complex matrices, pharmaceutical, semiconductor</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="reveal">Applications in Pharmaceutical Analysis</h2>
+    <p class="reveal">
+      In the pharmaceutical context at NPRA, the Agilent 8900 ICP-QQQ is primarily used for:
+    </p>
+    <ul class="reveal">
+      <li><strong>Heavy Metal Limit Tests:</strong> Quantifying elemental impurities (As, Hg, Pb, Cd) in pharmaceutical products per USP ⟨232⟩/⟨233⟩ and ICH Q3D guidelines.</li>
+      <li><strong>Multi-Element Screening:</strong> Simultaneous analysis of up to 24 target elements across drug products, substances, and excipients.</li>
+      <li><strong>Trace-Level Detection:</strong> Sub-ppb sensitivity ensures compliance with the stringent concentration limits set by pharmacopeial standards.</li>
+      <li><strong>Spike Recovery Validation:</strong> Method validation with spiked samples to verify accuracy (70–150% recovery) per USP ⟨233⟩.</li>
+    </ul>
+
+    <div class="info-box note reveal">
+      <div class="box-title">📌 Context at NPRA</div>
+      At the National Pharmaceutical Regulatory Agency (NPRA), the ICP-MS is located in the <strong>Unit Analisis Tradisional — Logam Berat</strong> under Seksyen Pengujian Produk & Kosmetik, PKKK. It is used daily for routine heavy metal analysis of registered and sampled pharmaceutical products.
+    </div>
+
+  </div>
+
+  <!-- Chapter Navigation -->
+  <div class="chapter-nav reveal">
+    <a href="index.html" class="nav-prev">
+      <div class="nav-label">Home</div>
+      <div class="nav-title">All Chapters</div>
+    </a>
+    <a href="chapter2.html" class="nav-next">
+      <div class="nav-label">Next Chapter</div>
+      <div class="nav-title">Startup & Shutdown</div>
+    </a>
+  </div>
+
+  <div class="footer">Agilent 8900 ICP-MS Operation Guide ◈ Chapter 1 ◈ NPRA Malaysia ◈ Syarief Azman</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

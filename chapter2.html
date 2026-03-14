@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 2: Startup & Shutdown — Agilent 8900 ICP-MS Guide</title>
+<meta name="description" content="Step-by-step startup, plasma ignition, warm-up, and shutdown procedures for the Agilent 8900 ICP-QQQ.">
+<link rel="icon" type="image/png" href="https://syariefazman.com/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-canvas"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+<div class="grid-overlay"></div>
+
+<div class="main">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="ctrl-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All Chapters
+      </a>
+    </div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+      <button class="ctrl-btn" onclick="toggleTheme()" id="themeBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="themeTxt">Dark Mode</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-org">🇲🇾 NPRA — Agilent 8900 ICP-MS Guide</div><br>
+    <div class="hero-instrument">Chapter 02</div>
+    <h1>Startup & <span class="g">Shutdown</span></h1>
+    <div class="hero-sub">Power-On, Plasma Ignition & Safe Shutdown Sequences</div>
+  </div>
+
+  <div class="content">
+
+    <!-- ═══ PRE-STARTUP ═══ -->
+    <h2 class="reveal">Pre-Startup Checklist</h2>
+    <p class="reveal">Before powering on the instrument, complete the following safety and readiness checks:</p>
+
+    <ol class="step-list reveal">
+      <li><strong>Argon Gas Supply:</strong> Verify the argon cylinder pressure is adequate (typically &gt; 100 psi / 7 bar). Ensure the regulator outlet pressure is set to approximately <strong>80–100 psi</strong>. Check for any gas leaks at connections.</li>
+      <li><strong>Drain Vessel:</strong> Inspect the drain vessel (waste container) beneath the spray chamber. Empty it if it is more than half full. Ensure the drain tube is properly connected and has a liquid seal to maintain the spray chamber pressure.</li>
+      <li><strong>Exhaust System:</strong> Confirm that the laboratory exhaust/extraction system is running with positive extraction at the instrument exhaust duct. The ICP-MS generates hot plasma gases that must be vented properly.</li>
+      <li><strong>Peristaltic Pump Tubing:</strong> Inspect all pump tubing (sample, internal standard, drain) for flat spots, cracks, or loss of elasticity. Replace if deteriorated. Ensure the tubing is correctly seated in the pump rollers.</li>
+      <li><strong>Spray Chamber & Torch:</strong> Visually inspect the spray chamber, torch assembly, and bonnet for cracks, deposits, or damage. Clean if deposits are visible (see Chapter 6: Maintenance).</li>
+      <li><strong>Interface Cones:</strong> Check that the sampler and skimmer cones are correctly installed and seated. Verify the orifices are clear of debris (use the Agilent magnifier tool if available).</li>
+      <li><strong>Sample Uptake Line:</strong> Place the sample uptake line into a container of <strong>2% HNO₃ rinse solution</strong> (or your standard rinse blank).</li>
+      <li><strong>Instrument Covers:</strong> Ensure all instrument panels and covers are closed and secured. Safety interlocks will prevent plasma ignition if covers are open.</li>
+    </ol>
+
+    <div class="info-box warn reveal">
+      <div class="box-title">⚠️ Safety Reminder</div>
+      Never look directly at the plasma without the protective viewing window. The ICP plasma emits intense UV radiation that can cause eye damage. Always work with instrument covers closed during operation.
+    </div>
+
+    <!-- ═══ STARTUP ═══ -->
+    <h2 class="reveal">Startup Procedure</h2>
+    <p class="reveal">Follow this sequence to power on the instrument and ignite the plasma:</p>
+
+    <h3 class="reveal">Step 1 — Power On the Water Recirculator (Chiller)</h3>
+    <p class="reveal">
+      Turn on the <strong>water recirculator/chiller</strong> first. It provides cooling water to the ICP-MS RF coil and interface region. Allow the chiller to stabilise for a few minutes until it reaches the set temperature (typically <strong>15–20 °C</strong>). Verify water flow is established.
+    </p>
+
+    <h3 class="reveal">Step 2 — Power On the ICP-MS Instrument</h3>
+    <p class="reveal">
+      Turn on the main power switch of the Agilent 8900 ICP-MS. The instrument will begin its initialisation sequence:
+    </p>
+    <ul class="reveal">
+      <li>The <strong>foreline (roughing) pump</strong> starts automatically and begins evacuating the vacuum chambers.</li>
+      <li>The <strong>turbomolecular pump</strong> will ramp up to full speed — this takes several minutes.</li>
+      <li>System self-diagnostics run, including checks on vacuum levels, temperatures, and gas flows.</li>
+    </ul>
+
+    <div class="info-box note reveal">
+      <div class="box-title">📌 First Start / Cold Start</div>
+      If the instrument has been fully vented or shut off for an extended period, allow at least <strong>2–4 hours</strong> for the vacuum system to pump down to operating levels before igniting the plasma. For overnight shutdowns where the vacuum was maintained, pump-down is much faster (minutes).
+    </div>
+
+    <h3 class="reveal">Step 3 — Power On the Computer & Launch MassHunter</h3>
+    <p class="reveal">
+      Turn on the workstation PC. Launch <strong>ICP-MS MassHunter Workstation</strong> software. The software will automatically connect to the instrument and display the current instrument status on the <strong>Home → Startup</strong> tab.
+    </p>
+    <p class="reveal">Check the status indicators for:</p>
+    <ul class="reveal">
+      <li>✅ Vacuum status — should show "Ready" (green)</li>
+      <li>✅ Temperature — chiller and interface temperatures within range</li>
+      <li>✅ Gas pressures — argon and cell gas pressures normal</li>
+      <li>⚠️ Any warning or error indicators — resolve before proceeding</li>
+    </ul>
+
+    <h3 class="reveal">Step 4 — Plasma Ignition</h3>
+    <ol class="step-list reveal">
+      <li><strong>Engage the peristaltic pump:</strong> Lower the pump clamps onto the tubing. Start the pump to begin aspirating the rinse solution.</li>
+      <li><strong>Wait for rinse flow:</strong> Allow 30–60 seconds for solution to reach the nebulizer and establish a stable aerosol.</li>
+      <li><strong>Ignite the plasma:</strong> In MassHunter, click the <strong>"Plasma On"</strong> button (or use the Startup sequence). The RF generator will ignite the plasma. You should see a bright white/blue plasma glow through the viewing window.</li>
+      <li><strong>Warm-up period:</strong> Allow the plasma to stabilise for at least <strong>15–30 minutes</strong> before performing any analysis or tuning. This warm-up period ensures thermal equilibration of the torch, cones, and optics.</li>
+    </ol>
+
+    <div class="info-box tip reveal">
+      <div class="box-title">💡 Pro Tip — Cone Conditioning</div>
+      During the warm-up period, aspirate a <strong>50 ppm calcium solution in 1% HNO₃</strong> for ~10 minutes to condition the interface cones. This helps passivate the metal surfaces and stabilise the initial signal. Follow with a 1% HNO₃ rinse before switching to your analysis blank.
+    </div>
+
+    <h3 class="reveal">Step 5 — Autotune & Performance Check</h3>
+    <p class="reveal">
+      After warm-up, run the <strong>Autotune</strong> procedure from MassHunter (covered in detail in Chapter 3). The autotune optimises plasma position (torch axis), ion lens voltages, and cell gas flows. After autotune, a <strong>Performance Report</strong> is generated — review it to confirm the instrument meets specifications.
+    </p>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Check</th><th>Typical Criteria</th><th>Action if Fail</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>7 Li Sensitivity</strong></td><td>&gt; 500 Mcps/ppm</td><td>Check sample introduction, cones</td></tr>
+          <tr><td><strong>89 Y Sensitivity</strong></td><td>&gt; 1000 Mcps/ppm</td><td>Re-optimize torch position</td></tr>
+          <tr><td><strong>205 Tl Sensitivity</strong></td><td>&gt; 500 Mcps/ppm</td><td>Check cones, lens voltages</td></tr>
+          <tr><td><strong>Oxide Ratio (CeO/Ce)</strong></td><td>&lt; 1.5%</td><td>Adjust nebulizer gas, plasma position</td></tr>
+          <tr><td><strong>Doubly Charged (Ce²⁺/Ce⁺)</strong></td><td>&lt; 2%</td><td>Adjust sampling depth</td></tr>
+          <tr><td><strong>Background (m/z 220)</strong></td><td>&lt; 1 cps</td><td>Check vacuum, cleanliness</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ═══ SHUTDOWN ═══ -->
+    <h2 class="reveal">Shutdown Procedure</h2>
+    <p class="reveal">Proper shutdown protects the instrument and extends component lifespan. Follow this sequence:</p>
+
+    <h3 class="reveal">Standard (End-of-Day) Shutdown</h3>
+    <ol class="step-list reveal">
+      <li><strong>System Rinse:</strong> Aspirate <strong>2% HNO₃</strong> (or appropriate rinse solution) for at least <strong>5–10 minutes</strong> to flush residual sample from the sample introduction system, nebulizer, spray chamber, and torch.</li>
+      <li><strong>Final Rinse:</strong> Switch to <strong>ultrapure deionised water</strong> and rinse for an additional <strong>3–5 minutes</strong> to remove acid residue.</li>
+      <li><strong>Turn Off Plasma:</strong> In MassHunter, click <strong>"Plasma Off"</strong>. The RF generator shuts down, and the plasma extinguishes.</li>
+      <li><strong>Release Pump Tubing:</strong> Release the peristaltic pump clamps to prevent tubing deformation. Lift the pressure bar off the tubing.</li>
+      <li><strong>Drain the Spray Chamber:</strong> Allow any remaining liquid in the spray chamber to drain. Empty the drain vessel if needed.</li>
+      <li><strong>Keep Vacuum Running:</strong> For overnight shutdown, leave the instrument powered on to <strong>maintain vacuum</strong>. This allows rapid startup the next day. Only turn off gases and plasma.</li>
+    </ol>
+
+    <div class="info-box tip reveal">
+      <div class="box-title">💡 Overnight Standby</div>
+      For normal overnight shutdown, keep the ICP-MS powered on with the vacuum maintained. This preserves the vacuum levels and allows for a much faster startup the next morning — often ready within 15–30 minutes instead of hours.
+    </div>
+
+    <h3 class="reveal">Full Shutdown (Extended Off / Maintenance)</h3>
+    <p class="reveal">For extended shutdown (weekends, holidays, maintenance):</p>
+    <ol class="step-list reveal">
+      <li><strong>Complete the Standard Shutdown</strong> steps above (rinse, plasma off, release tubing).</li>
+      <li><strong>Vent the MS:</strong> In MassHunter, select <strong>"Vent"</strong> from the instrument control. This safely brings the vacuum chambers to atmospheric pressure. The software automatically shuts off heaters and voltages, sets gas flows to standby, and allows turbo pumps to spin down.</li>
+      <li><strong>Wait for Venting:</strong> Wait until the software confirms venting is complete (turbo pump fully stopped, atmospheric pressure reached). This may take <strong>20–30 minutes</strong>.</li>
+      <li><strong>Close MassHunter:</strong> Close the MassHunter software.</li>
+      <li><strong>Power Off PC:</strong> Shut down the workstation computer.</li>
+      <li><strong>Power Off ICP-MS:</strong> Turn off the main power switch on the Agilent 8900.</li>
+      <li><strong>Power Off Chiller:</strong> Turn off the water recirculator.</li>
+      <li><strong>Close Gas Valves:</strong> Close the main valve on the argon cylinder and any cell gas cylinders.</li>
+    </ol>
+
+    <div class="info-box danger reveal">
+      <div class="box-title">🚫 Critical Warning</div>
+      <strong>Never turn off the instrument power while the turbo pump is still spinning at high speed.</strong> Always use the software Vent procedure to allow the turbo pump to spin down safely. Abruptly cutting power can damage the turbo pump bearings — a very expensive repair.
+    </div>
+
+    <h2 class="reveal">Quick Reference — Startup/Shutdown Sequence</h2>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Action</th><th>Startup Order</th><th>Shutdown Order</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Water Chiller</strong></td><td>1st — Turn ON</td><td>7th — Turn OFF</td></tr>
+          <tr><td><strong>ICP-MS Instrument</strong></td><td>2nd — Turn ON</td><td>6th — Turn OFF</td></tr>
+          <tr><td><strong>PC + MassHunter</strong></td><td>3rd — Launch</td><td>4th/5th — Close & OFF</td></tr>
+          <tr><td><strong>Pump + Rinse</strong></td><td>4th — Engage pump</td><td>1st — Rinse system</td></tr>
+          <tr><td><strong>Plasma</strong></td><td>5th — Ignite</td><td>3rd — Turn OFF</td></tr>
+          <tr><td><strong>Vacuum (Vent)</strong></td><td>Auto (wait for ready)</td><td>2nd — Vent (full stop only)</td></tr>
+          <tr><td><strong>Argon Gas Valve</strong></td><td>Open before startup</td><td>8th — Close (full stop only)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Chapter Navigation -->
+  <div class="chapter-nav reveal">
+    <a href="chapter1.html" class="nav-prev">
+      <div class="nav-label">Previous Chapter</div>
+      <div class="nav-title">Introduction & System Overview</div>
+    </a>
+    <a href="chapter3.html" class="nav-next">
+      <div class="nav-label">Next Chapter</div>
+      <div class="nav-title">MassHunter Software & Tuning</div>
+    </a>
+  </div>
+
+  <div class="footer">Agilent 8900 ICP-MS Operation Guide ◈ Chapter 2 ◈ NPRA Malaysia ◈ Syarief Azman</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
