@@ -1,0 +1,319 @@
+================================================================================
+COMPREHENSIVE PROMPT FOR CLAUDE OPUS
+EA BUDAK UBAT — TELEGRAM AUTO-REPLY BOT
+================================================================================
+
+You are an expert Python developer. Build me a complete, production-ready
+Telegram Web auto-reply bot. Read every instruction carefully before writing
+any code.
+
+================================================================================
+SECTION 1 — PROJECT OVERVIEW
+================================================================================
+
+I am Syarief Azman, a Malaysian forex trader and developer. I sell Expert
+Advisors (EAs) for MetaTrader under the brand "EA Budak Ubat" at
+https://eabudakubat.com. I need a bot that monitors my Telegram Web on my
+Brave browser (Windows PC) and automatically replies to customer messages AS
+ME — not as a bot account, but from my own Telegram account.
+
+The bot must:
+1. Auto-fetch and deeply study ALL knowledge from my GitHub repos and website
+2. Generate intelligent, contextual replies using Claude claude-sonnet-4-20250514
+3. Control Telegram Web via Playwright (browser automation, not Telegram API)
+4. Simulate human typing behaviour to avoid detection
+5. Handle both Bahasa Malaysia and English messages correctly
+6. Run continuously as long as my PC is on
+
+================================================================================
+SECTION 2 — KNOWLEDGE SOURCES TO FETCH & STUDY
+================================================================================
+
+The bot must fetch and extract ALL meaningful text content from these URLs
+every time it starts up. Use httpx + BeautifulSoup for fetching.
+
+WEBSITE PAGES (https://eabudakubat.com):
+- https://eabudakubat.com                          (main page, all 6 products overview)
+- https://eabudakubat.com/ea-budak-ubat            (EA Budak Ubat full details)
+- https://eabudakubat.com/goldmind-ai              (GoldMind AI full details)
+- https://eabudakubat.com/bracketblitz             (BracketBlitz EA full details)
+- https://eabudakubat.com/mathedge-pro             (MathEdge Pro full details)
+- https://eabudakubat.com/aligator-gozaimasu       (Aligator Gozaimasu full details)
+- https://eabudakubat.com/encik-moku               (Encik Moku full details)
+- https://eabudakubat.com/guide                    (guide page if accessible)
+
+GITHUB REPOS (fetch the README/release pages):
+- https://github.com/syarief02/EA_Budak_Ubat/releases/latest
+- https://github.com/syarief02/EA_Budak_Ubat_MT5_Public
+- https://raw.githubusercontent.com/syarief02/EA_Budak_Ubat/main/README.md
+- https://raw.githubusercontent.com/syarief02/EA_Budak_Ubat_MT5_Public/main/README.md
+
+Also attempt to fetch these (skip gracefully if 404):
+- https://github.com/syarief02/BracketBlitz
+- https://github.com/syarief02/MathEdge-Pro
+- https://github.com/syarief02/Aligator-Gozaimasu
+- https://github.com/syarief02/Encik-Moku
+- https://github.com/syarief02/GoldMind-AI
+
+FETCHING RULES:
+- Use a real browser User-Agent header
+- Follow redirects
+- Timeout: 15 seconds per URL
+- If a URL fails, print a warning and continue — never crash on fetch failure
+- For GitHub pages: extract README content specifically (raw markdown preferred)
+- For website pages: remove nav, footer, scripts, styles before extracting text
+- Cap each source at 4000 characters to stay within token limits
+- Combine all fetched content into one large knowledge string
+- Save the combined knowledge to knowledge_cache.txt on disk
+- On next startup, if knowledge_cache.txt is less than 1 hour old, use the
+  cache instead of re-fetching (to avoid rate limiting)
+- Print fetch status for each URL: success (char count) or failed (reason)
+
+================================================================================
+SECTION 3 — IDENTITY & REPLY RULES
+================================================================================
+
+The AI must reply AS Syarief Azman. Here is the full system prompt to use:
+
+---SYSTEM PROMPT START---
+You are Syarief Azman, a Malaysian pharmaceutical analyst and algorithmic forex
+trader. You are the developer of EA Budak Ubat trading tools, sold at
+https://eabudakubat.com. You are replying to customers and potential customers
+on Telegram.
+
+PERSONALITY & TONE:
+- Professional but friendly and approachable
+- Bilingual: reply in Bahasa Malaysia if the person writes in BM, English if
+  they write in English. If mixed, match the dominant language.
+- Concise: keep replies short and to the point. Never write essays.
+- Helpful: always try to answer the question directly
+- Honest: never promise profits or guarantee trading results
+- Warm: use "😊" or "🤝" sparingly for a professional touch
+
+REPLY RULES:
+- Never say you are a bot or AI
+- Never make up information not found in the knowledge base
+- For broker questions: always direct them to register through the affiliate
+  link for their chosen broker
+- For technical issues you cannot solve: say
+  "Boleh describe lebih detail? Saya akan cuba bantu." or
+  "For detailed support, please check the guide at eabudakubat.com/guide"
+- If asked about pricing: refer to https://tinyurl.com/eabubuy
+- If asked for free version: refer to https://tinyurl.com/eabugetfree
+- For account authorization: ask them to PM their account number after
+  registering through the affiliate link
+- Keep replies under 150 words unless the question genuinely requires more
+- Do NOT repeat information the person already clearly knows
+- Do NOT add unnecessary disclaimers on every reply
+
+KEY FACTS TO ALWAYS KNOW:
+- Latest EA version: v1.62
+- Developer Telegram: @SyariefAzman
+- Website: https://eabudakubat.com
+- Buy full version: https://tinyurl.com/eabubuy
+- Get free version: https://tinyurl.com/eabugetfree
+- Supported brokers for free version: FISG, CXM, FBS, Headway, Forex4You,
+  OctaFx, InstaForex, LiteForex, RoboForex, XM, Valetax
+- Recommended leverage: 1:500 and above
+- Minimum deposit: USD 100
+- Recommended account type: Cent account (especially for beginners)
+- VPS promo: https://tinyurl.com/GBVPSFX1 (code: GBVPSFX50)
+
+BROKER AFFILIATE LINKS (use when directing customers to register):
+- FISG: https://my.fisg.com/u/CTt0Rd
+- CXM: https://secure.cxmys.com/links/go/5062
+- FBS: https://fbs.partners?ibl=154319&ibp=588292
+- Headway: https://headway.partners/user/signup?hwp=516d6b
+- Forex4You: https://account.forex4you.com/en/user-registration/?affid=4hcnvz4
+- OctaFx: https://my.octafxmy.net/change-partner-request/?partner=246630
+- InstaForex: https://www.instaforex.com?x=KUSD
+- LiteForex: https://www.litefinance.com/?uid=805161060
+- RoboForex: https://my.roboforex.com/en/?a=mxyg
+- XM: https://clicks.pipaffiliates.com/c?c=862266&l=en&p=1
+- Valetax: https://ma.valetax.com/p/1939088
+
+Below is the latest knowledge fetched from the official sources:
+{KNOWLEDGE_PLACEHOLDER}
+---SYSTEM PROMPT END---
+
+================================================================================
+SECTION 4 — BROWSER AUTOMATION SPECS
+================================================================================
+
+BROWSER: Brave on Windows
+BRAVE PATH: C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe
+REMOTE DEBUG PORT: 9222
+TELEGRAM URL: https://web.telegram.org
+
+CONNECTION METHOD:
+- Use Playwright's connect_over_cdp() to connect to existing Brave session
+- Do NOT launch a new browser — connect to the already-running one
+- If connection fails, print clear instructions and exit gracefully
+
+FINDING TELEGRAM TAB:
+- Iterate through all browser contexts and pages
+- Find the page whose URL contains "web.telegram.org"
+- If not found, instruct user to open Telegram Web and restart
+
+DETECTING UNREAD MESSAGES:
+- Every CHECK_INTERVAL seconds, scan the chat list
+- Look for chats with unread message indicators
+- Use multiple CSS selector fallbacks since Telegram Web updates its selectors:
+  Primary:   ".chatlist-chat:has(.badge-unread)"
+  Fallback1: "[data-peer-id]:has(.unread-count)"
+  Fallback2: ".chat-item:has(.badge)"
+- If selectors fail, log a warning but don't crash
+
+READING MESSAGES:
+- When an unread chat is found, click it and wait 1.5s for messages to load
+- Find the last incoming message (not sent by us — class "is-out" = our message)
+- Extract the message text
+- Extract a unique message ID (data-mid attribute) to avoid re-replying
+- Skip if message ID already exists in replied_messages set
+- Skip if message text is empty or only contains media/stickers (no text)
+
+TYPING & SENDING:
+- Find the message input box using multiple selector fallbacks:
+  Primary:   ".input-message-input"
+  Fallback1: "[contenteditable='true']"
+  Fallback2: ".composer-input"
+- Type character by character with randomized delays (simulate human typing)
+- Base typing speed: 0.04s per character + random(0, 0.03)
+- Wait random(0.5, 1.5) seconds after typing before pressing Enter
+- Press Enter to send
+- After sending, wait random(1, 3) seconds before moving to next chat
+
+================================================================================
+SECTION 5 — CONFIGURATION
+================================================================================
+
+All config values must be at the top of the file as constants:
+
+BRAVE_PATH          = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
+REMOTE_DEBUG_PORT   = 9222
+CHECK_INTERVAL      = 5        # seconds between scans
+MIN_REPLY_DELAY     = 3        # min seconds before replying (human simulation)
+MAX_REPLY_DELAY     = 8        # max seconds before replying
+TYPING_SPEED        = 0.04     # seconds per character
+KNOWLEDGE_CACHE_TTL = 3600     # cache TTL in seconds (1 hour)
+MAX_CHARS_PER_SOURCE = 4000    # max chars to extract per URL
+MAX_TOKENS_REPLY    = 500      # max tokens for Claude reply
+
+================================================================================
+SECTION 6 — PROJECT FILE STRUCTURE
+================================================================================
+
+Produce exactly these files:
+
+1. auto_reply.py          — Main bot script (all logic in one file)
+2. requirements.txt       — Python dependencies
+3. .env                   — API key template
+4. START_BRAVE.bat        — Launches Brave with remote debugging
+5. START_BOT.bat          — Installs deps and starts bot
+6. README.txt             — Full setup guide in Bahasa Malaysia + English
+
+================================================================================
+SECTION 7 — REQUIREMENTS
+================================================================================
+
+requirements.txt must include:
+- playwright>=1.44.0
+- anthropic>=0.28.0
+- python-dotenv>=1.0.1
+- httpx>=0.27.0
+- beautifulsoup4>=4.12.3
+
+================================================================================
+SECTION 8 — ERROR HANDLING REQUIREMENTS
+================================================================================
+
+The bot must NEVER crash on:
+- Network failures (wrap all fetch calls in try/except)
+- Selector not found (use fallbacks, log warning, skip)
+- Claude API errors (log error, skip that message, continue)
+- Tab crashes or page reloads (catch playwright errors, wait and retry)
+- Rate limiting (add exponential backoff on repeated errors)
+
+Always print meaningful status messages with timestamps:
+[10:45:23] [Info] Found 2 unread chats
+[10:45:24] [Fetch] eabudakubat.com → 3842 chars ✓
+[10:45:26] [AI] Generating reply for: "berapa harga full version?"
+[10:45:28] [Sent] Harga full version boleh tengok di https://tinyurl...
+
+================================================================================
+SECTION 9 — START_BRAVE.bat REQUIREMENTS
+================================================================================
+
+The bat file must:
+1. Check if Brave is already running on port 9222 (using netstat)
+2. If already running, skip launching and just inform user
+3. If not running, launch Brave with:
+   --remote-debugging-port=9222
+   --user-data-dir="%USERPROFILE%\BraveDebugProfile"
+4. After launching, remind user to open web.telegram.org and login
+
+================================================================================
+SECTION 10 — README REQUIREMENTS
+================================================================================
+
+Write README.txt in BOTH languages (BM first, then English).
+Cover:
+- Prerequisites (Python, API key)
+- Step by step setup (4 steps max)
+- How to get Anthropic API key
+- What the bot does and does not do
+- How to stop the bot
+- Troubleshooting (5 common errors with fixes)
+- Important warnings about Telegram TOS
+
+================================================================================
+SECTION 11 — CODE QUALITY REQUIREMENTS
+================================================================================
+
+- Use async/await throughout (asyncio + playwright async API)
+- Add type hints to all functions
+- Add docstrings to all functions
+- Group related functions with section comments
+- No global mutable state except: replied_messages (set) and KNOWLEDGE (str)
+- Load .env using python-dotenv
+- Validate ANTHROPIC_API_KEY exists before starting, exit with clear message if missing
+- Print a clean startup banner showing version, config values, and knowledge
+  fetch status
+
+================================================================================
+SECTION 12 — EXAMPLE EXPECTED BEHAVIOUR
+================================================================================
+
+Scenario: Customer sends "ea bu v1.62 compatible tak dengan headway?"
+
+Expected bot reply (BM):
+"Compatible! EA BU v1.62 fully support Headway. Daftar melalui link ni
+untuk guna percuma 👉 https://headway.partners/user/signup?hwp=516d6b
+Lepas daftar, PM account number ya. 😊"
+
+Scenario: Customer sends "whats the difference between free and paid?"
+
+Expected bot reply (EN):
+"The free version works with authorized broker accounts registered under my
+referral link. The paid Full Version (via MQL5) runs on unlimited accounts
+with no broker restrictions. Get it here: https://tinyurl.com/eabubuy"
+
+================================================================================
+IMPORTANT NOTES FOR OPUS
+================================================================================
+
+1. Write ALL files completely — no placeholders, no "add your code here"
+2. The main auto_reply.py should be fully functional as a single file
+3. Test your CSS selectors against the actual Telegram Web K interface
+   (web.telegram.org/k) as that is the default modern version
+4. The knowledge fetching must happen BEFORE connecting to Brave
+5. Print clearly when knowledge cache is used vs fresh fetch
+6. Do not use Telegram Bot API, Telethon, or Pyrogram — this MUST use
+   Playwright browser automation only
+7. The bot should handle group chats and private chats
+8. For group chats: only reply when the last message mentions "EA", "bot",
+   "Syarief", "broker", "trading", or contains a question mark
+
+================================================================================
+END OF PROMPT
+================================================================================
